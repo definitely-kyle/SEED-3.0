@@ -26,7 +26,7 @@ Currently, SEED 2.0 has only been tested on Windows and MacOS. Although it may b
 
 First, download the files from the SEED 2.0 GitHub page. Press the green _Code_ button on the top left and download zip. When downloaded, unzip the downloaded files.After downloading these source files, save them in the same folder anywhere you would like.
 
-* Code Files:
+#### Code Files:
 
 In order to run SEED 2.0 from the code files, the user must have a current Python installation, that can be downloaded from the [Python website](https://www.python.org/downloads/). If running SEED 2.0 on a Windows system, ensure to select the add python to path option during installation.
 
