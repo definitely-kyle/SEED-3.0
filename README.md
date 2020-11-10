@@ -1,6 +1,7 @@
-# SEED 2.0
+# SEED 2.X
 
 **SEED**: **S**oftware for the **E**xtraction of **E**quations from **D**ata
+Created by Michael Vause, and in active development by Kyle Kean
 
 ## Table of contents
 * [Introduction](#introduction)
