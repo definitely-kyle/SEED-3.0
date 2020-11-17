@@ -112,19 +112,16 @@ def advanced():
     
     window.geometry(size) # Set GUI window's size
 
-# Get optimizer or differentiator selection class name
+# Get optimizer selection class name
 def get_od_class(selection):
     if(selection == "opt"):
         opt = str(opt_var.get()) # Get the optimization option selected
         fil = open(pysindypath+"/optimizers/"+opt+".py") # Open the optimization option file
 
-        
         # Read the file, return all of the names of the classes in the file and return the class name for the option
         contents = fil.read()
         par = ast.parse(contents)
         classes = [node.name for node in ast.walk(par) if isinstance(node, ast.ClassDef)]
-    elif(selection == "diff"): # PySINDY now uses the derivative package
-        return classes[0]
 
     return classes[0]
 
@@ -267,10 +264,8 @@ def d_inst(widget_list):
         
         count += 1
 
-    # inst = eval(instance) # Instantiate the line
-
-    print(instance) #debugging
-    return instance
+    diff = eval("ps.SINDyDerivative(kind = \""+diff_var.get()+"\","+instance+")")
+    return diff
 
 
 # Instantiate the optimizer
@@ -679,13 +674,12 @@ def comp():
         return None
 
     # Try to instantiate the differentiator with the advanced variables. Stop the computation if an invalid variable is input (will throw an error when instantiating)
-    # try:
-        # diff = od_inst(diff_widgets,"diff")
-        # method replaced with manual derivative calculations
-           
-    # except Exception:
-        # messagebox.showerror(title="Invalid Option", message="You have input an invalid differentation variable, check the PySINDy documentation for valid options.\n\nExiting the computation.")
-        # return None
+    try:
+        diff = d_inst(diff_widgets) 
+        print(diff)  #debugging
+    except Exception:
+        messagebox.showerror(title="Invalid Option", message="You have input an invalid differentation variable, check the PySINDy documentation for valid options.\n\nExiting the computation.")
+        return None
 
     # Instatiate the feature library
     feat = feat_inst()
@@ -716,20 +710,12 @@ def comp():
         messagebox.showerror(title="Invalid File Type", message="The selected file needs to be a .csv file in the correct format. Read to tutorial for more information.\n\nExiting the computation.")
         return None
 
-        # Get differentiator stuff
-
-    kwargs = d_inst(diff_widgets)
-    diff = eval("ps.SINDyDerivative(kind = \""+diff_var.get()+"\","+kwargs+")")
-    print(diff) 
-
 
     # Create PySINDy Model
     model = ps.SINDy(optimizer=opt, differentiation_method=diff, feature_library=feat, feature_names=variable_names) # Instantiate the model with the previously obtained instances and variable names
     model.fit(contents, t=dt) # Fit the input data to the model
     coefs = model.coefficients() # Obtain the coefficient matrix from the obtained model
     feats = model.get_feature_names() # Get the feature names from the obtained model
-
-    
     score = model.score(contents, t=time_series) # Obtain the model score for the system
 
     conds = np.array([float(val) for val in contents[0]]) # Convert the system's initial conditions into a numpy array of float values as this is what is expected by the model.simulate() function
@@ -868,24 +854,11 @@ diff_label.grid(row=4,column=0,sticky="E")
 
 diff_var = tk.StringVar(window) # Variable storing the selected value in the dropdown
 
-
-# temp_options = non_hidden(pysindypath+"/differentiation") # Get a list of the differentiator file names from the PySINDy source files
-    # Remove the files that aren't differentiator options
-# if "__pycache__" in temp_options:
-    # temp_options.remove("__pycache__")
-# if "__init__.py" in temp_options:
-    # temp_options.remove("__init__.py")
-# if "base.py" in temp_options:
-    # temp_options.remove("base.py")
-# if "sindy_derivative.py" in temp_options: # This came in a PySINDy update at the end of the project, support for this options needs to be added
-  #  temp_options.remove("sindy_derivative.py")
-
-# ext = ".py"
+# Differentiator is based on the derivative package rather than PySINDy
 diff_options = ["finite_difference", "savitzky_golay", "spectral", "spline", "trend_filtered"] # Five derivative options provided by derivative package
 diff_options.sort()
 #diff_options.append("pre-computed") # This would be where more options are added if required, e.g. pre-computed derivatives
 diff_var.set("finite_difference") # Set the default value for the differentiation option
-temp_options.clear()
 
 # Create, configure and display the differentiation option dropdown on the GUI
 diff_menu = tk.OptionMenu(window,diff_var,*diff_options,command=get_diff)
@@ -913,7 +886,7 @@ feat_options.sort()
 feat_var.set("polynomial_library") # Set the default value for the differentiation option
 temp_options.clear()
 
-    # Create, configure and display the feature library option dropdown on the GUI
+# Create, configure and display the feature library option dropdown on the GUI
 feat_menu = tk.OptionMenu(window,feat_var,*feat_options)
 feat_menu.config(width=drop_w,font=("Times",15),bg=bgc)
 feat_menu.grid(row=6,column=1,columnspan=3,sticky="nsew")
@@ -921,27 +894,27 @@ feat_menu.grid(row=6,column=1,columnspan=3,sticky="nsew")
 # Add frame for all buttons on the GUI
 button_fram = tk.Frame(window,bg=bgc,bd=2,relief="sunken",pady=10,width=fram_w)
 
-    # Tutorial button
+# Tutorial button
 tut_button = tk.Button(button_fram,text="Tutorial",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=lambda : webbrowser.open("https://github.com/M-Vause/SEED2.0"))
 tut_button.grid(row=0,column=0,columnspan=2,sticky="EW")
 
-    # Show advanced options button
+# Show advanced options button
 adv_button = tk.Button(button_fram,text="Show Advanced",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=advanced)
 adv_button.grid(row=0,column=2,columnspan=2,sticky="EW")
 
-    # Blank line in the frame
+# Blank line in the frame
 blank_line1 = tk.Label(button_fram,text=" ",font=("Times",15),width=round(line_w/2),highlightbackground=bgc,bg=bgc)
 blank_line1.grid(row=1,column=0,columnspan=2)
 
-    # Reset advanced options button
+# Reset advanced options button
 reset_button = tk.Button(button_fram,text="Reset to Defaults",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=reset)
 reset_button.grid(row=1,column=2,columnspan=2,sticky="EW")
 
-    # Blank line in the frame
+# Blank line in the frame
 blank_line2 = tk.Label(button_fram,text=" ",font=("Times",15),width=line_w,highlightbackground=bgc,bg=bgc)
 blank_line2.grid(row=2,column=0,columnspan=4)
 
-    # Compute button
+# Compute button
 comp_button = tk.Button(button_fram,text="Compute",font=("Times",15,"bold"),width=10,highlightbackground=bgc,command=comp)
 comp_button.grid(row=3,column=0,columnspan=4,sticky="EW")
 
