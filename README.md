@@ -1,8 +1,8 @@
-# SEED 2.X
+# PySEED
 
-**SEED**: **S**oftware for the **E**xtraction of **E**quations from **D**ata
+**PySEED**: **Py**thon **S**oftware for the **E**xtraction of **E**quations from **D**ata
 
-** TO DO **
+**TO DO**
 * Unit Testing
 * Adding Optimisers (LASSO etc.)
 * Analyse Noise Rejection
@@ -21,20 +21,20 @@
 * [License](#license)
 
 ## Introduction
-SEED 2.X is a software written in Python that allows for the extraction of governing differential equations from data. It has been written with use of the [PySINDy](https://github.com/dynamicslab/pysindy) package, written by Brian de Silva et al.
+PySEED is a package written in Python that allows for the extraction of governing differential equations from data. It has been written with use of the [PySINDy](https://github.com/dynamicslab/pysindy) package, written by Brian de Silva et al.
 
-SEED 2.X has a simple and intuitive Graphical User Interface (GUI) so that researchers in a wide variety of fields, without needing to know any programming, can analyse their data using cutting edge methods.
+PySEED has a simple and intuitive Graphical User Interface (GUI) so that researchers in a wide variety of fields, without needing to know any programming, can analyse their data using these cutting edge methods.
 
 ## Getting Started
 
 ### Installing
-Currently, SEED 2.X has only been tested on Windows. Although it may be able to run on other operating systems, results may vary.
+Currently, PySEED has only been tested on Windows. Although it may be able to run on other operating systems, results may vary. For previous iterations which have been tested on Mac, please refer to SEED 2.0, created by Michael Vause.
 
-First, download the files from the SEED 2.X GitHub page. Press the green _Code_ button on the top left and download zip. When downloaded, unzip the downloaded files.After downloading these source files, save them in the same folder anywhere you would like.
+First, download the files from the PySEED GitHub page. Press the green _Code_ button on the top left and download zip. When downloaded, unzip the downloaded files. After downloading these source files, save them in the same folder anywhere you would like.
 
-* Code Files:
+* Python:
 
-In order to run SEED 2.X from the code files, the user must have a current Python installation, that can be downloaded from the [Python website](https://www.python.org/downloads/). If running SEED 2.X on a Windows system, ensure to select the add python to path option during installation.
+In order to run PySEED, the user must have a current Python installation, that can be downloaded from the [Python website](https://www.python.org/downloads/). If running PySEED on a Windows system, ensure to select the add python to path option during installation.
 
 As well as the base Python installation, it is vital to install the Python modules needed for the programme to run. You can do this by running these commands in the terminal or command line:
 
@@ -44,9 +44,9 @@ As well as the base Python installation, it is vital to install the Python modul
 
 ## Usage
 
-### Running SEED 2.X
+### Running PySEED
 
-To run SEED 2.X from the code files, open the Python IDLE (included with the Python download) and open the file _SEED2\_0.py_. Click _Run > Run Module_ on the toolbar to run the software.
+To run PySEED from its files, open the Python IDE (included with the Python download) and open the file _SEED2\_0.py_. Click _Run > Run Module_ on the toolbar to run the software.
 
 The GUI will start up and will look like this:
 
@@ -58,26 +58,26 @@ The GUI will start up and will look like this:
 
 ![GUI win](images/GUI_win.png)
 
-After launching SEED 2.X, you can then select your data file and press the _Compute_ button to obtain your output equations.
+After launching, you can then select your data file and press the _Compute_ button to obtain your output equations.
 
 Check the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository for details on the optimization, differentiation and feature library options.
 
 ### Examples
-There are two datasets that come with the SEED 2.X download.
+There are two datasets that come with the download.
 
 The first, called _data\_Lorenz3d.csv_, contains the data for a three dimensional lorenz system, generated from the [feature overview](https://github.com/dynamicslab/pysindy/blob/master/examples/1_feature_overview.ipynb) example file from the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository. 
 
 The second, called _random\_5d.csv_, contains five variables of randomly generated data. This is to show an example of the output of SEED 2.X when a system with no underlying relationship is tested. It is clear that the SINDy algorithm can't settle on sparse coefficients to represent the model.
 
-The ability to generate your own dataset is also built into SEED 2.X. Just select the _Generate Lorenz Data_ option in the _Example/ Own Data_ dropdown menu. After pressing compute, a window will pop up containing the inital Lorenz conditions of the _data\_Lorenz3d.csv_ data. You can then edit the conditions to generate your own system. After pressing _Continue_, SEED 2.X will generate the system, and compute its output.
+The ability to generate your own dataset is also built into the program. Just select the _Generate Lorenz Data_ option in the _Example/ Own Data_ dropdown menu. After pressing compute, a window will pop up containing the inital Lorenz conditions of the _data\_Lorenz3d.csv_ data. You can then edit the conditions to generate your own system. After pressing _Continue_, PySEED will generate the system, and compute its output.
 
 ### Using your own data
-In order to use your own data with SEED 2.X, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
+In order to use your own data with PySEED, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
 An example of a three variable system is shown below:
 
 ![own data](images/Own_Data.png)
 
-There are two ways to run SEED 2.X with your own data file.
+There are two ways to run the program with your own data files.
 
 The first is to select _Own Data_ in the _Example/Own Data_ dropdown selection box on the main panel of the GUI, then using the file browser, you can then select the file containing your data.
 
