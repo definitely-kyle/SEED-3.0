@@ -3,6 +3,7 @@
 
 # Import packages
 import numpy as np
+import csv
 
 # Switch function for diff method
 def switch(arg):
@@ -29,3 +30,15 @@ def clean_contents(contents):
     contents = [val[1:] for val in contents] # Remove the time series data from the data matrix
     contents = np.array([[float(val) for val in item] for item in contents]) # Turn the list of lists into a numpy array as this is what the PySINDy model expects as an input
     return time_series, dt, contents, variable_names
+
+# Read selected file (from "Example/Own Data" dropdown) and return an array containing its data
+def read_file(selection, to_open):
+    if(selection == "Own Data"):
+        to_read = to_open      
+    else:
+        to_read = "./src/data/" + selection
+
+    with open(to_read, newline='') as csvfile:
+        data = list(csv.reader(csvfile))  
+
+    return(data)

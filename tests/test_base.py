@@ -5,8 +5,7 @@ import os
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 
 try:
-    from base import switch, clean_contents
-    from PySEED import read_file
+    from base import switch, clean_contents, read_file
 except ImportError as mod: # If the user didn't install the required modules beore trying to run SEED 2.0
     print("Install the required modules before starting:\n" + str(mod))
 except Exception as err: # Any other exception that should occur (nothing else should happen, hence generalising all other exceptions)

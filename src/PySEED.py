@@ -4,7 +4,7 @@
 
 # Import all required modules
 try:
-    from base import switch, clean_contents # A library for some base functions to reduce clutter
+    from base import switch, clean_contents, read_file # A library for some base functions to reduce clutter
     from derivative import dxdt # Derivative package developed alongside PySINDy
     import pytest
 
@@ -314,18 +314,6 @@ def get_feat_class():
     par = ast.parse(contents)
     classes = [node.name for node in ast.walk(par) if isinstance(node, ast.ClassDef)]
     return classes[0]
-
-# Read selected file (from "Example/Own Data" dropdown) and return an array containing its data
-def read_file(selection):
-    if(selection == "Own Data"):
-        to_read = to_open      
-    else:
-        to_read = "./src/data/" + selection
-
-    with open(to_read, newline='') as csvfile:
-        data = list(csv.reader(csvfile))  
-
-    return(data)
 
 # Create output window - containing coefficient value table, ouput equations and model score
 def show_output(table_size, coefs, feats, variable_names, window_name, score):
@@ -695,7 +683,7 @@ def comp():
 
         variable_names = ["x","y","z"] # Default system variable names if "Generate Lorenz System" is selected
     elif(window_name.endswith(".csv") or ((window_name == "Own Data") and to_open.endswith(".csv"))):
-        contents = read_file(sel_var.get()) # Obtain the data in the selected .csv file. This is a list of lists
+        contents = read_file(sel_var.get(), to_open) # Obtain the data in the selected .csv file. This is a list of lists
         time_series, dt, contents, variable_names = clean_contents(contents) # Split time series, time step, data and variable names into separate lists 
     else: # If the selected file isn't a .csv file, stop the computation
         messagebox.showerror(title="Invalid File Type", message="The selected file needs to be a .csv file in the correct format. Read to tutorial for more information.\n\nExiting the computation.")
