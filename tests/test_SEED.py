@@ -27,4 +27,6 @@ class TestLorenz(object):
 
     @pytest.mark.xfail
     def test_default_lorenz_plot(self):
+        assert False
+
 
