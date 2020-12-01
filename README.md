@@ -54,11 +54,11 @@ The GUI will start up and will look like this:
 
 * Mac:
 
-![GUI mac](images/GUI_mac.png)
+![GUI mac](src/images/GUI_mac.png)
 
 * Windows:
 
-![GUI win](images/GUI_win.png)
+![GUI win](src/images/GUI_win.png)
 
 After launching, you can then select your data file and press the _Compute_ button to obtain your output equations.
 
@@ -77,7 +77,7 @@ The ability to generate your own dataset is also built into the program. Just se
 In order to use your own data with SEED, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
 An example of a three variable system is shown below:
 
-![own data](images/Own_Data.png)
+![own data](src/images/Own_Data.png)
 
 There are two ways to run the program with your own data files.
 
@@ -88,11 +88,11 @@ You can also save the data file in the data folder containing the example data f
 ## Model Output
 After pressing compute, SEED uses the selections on the main GUI window to make a PySINDy model using the selected data. The first output window displays the output sparse coefficients in a table, and automatically forms the output equations. It also calculates and displays the model score, an inbuilt feature to PySINDy. An example of this window, on MacOS, can be seen below:
 
-![output window 1](images/window1.png)
+![output window 1](src/images/window1.png)
 
 The second output window displays two sets of plots. The first set shows the coefficients for each output equation in bar plots to easily visualise which terms in each equation are more important. The second set of plots shows the selected input data plotted against simulated data, created using the input data's initial conditions, evolved using the model's output equations. This can be seen below:
 
-![output window 2](images/window2.png)
+![output window 2](src/images/window2.png)
 
 Pressing the save button on this window saves both a _.png_ of the output plots and a _.csv_ of the output coefficient matrix to the filepath selected.
 
