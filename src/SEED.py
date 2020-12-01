@@ -131,7 +131,6 @@ def get_opt_class():
 # Get optimization option variables and update on advanced option panel
 def get_opt(command):
     class_name = get_opt_class()
-    print("optimiser class is " + class_name) #debug
 
     if (class_name == "Lasso"):
         opt_inst = Lasso()
