@@ -38,7 +38,6 @@ class TestLorenz(object):
 
         coefs = model.coefficients()
         feats = model.get_feature_names() # Get the feature names from the obtained model
-        score = model.score(contents, t=time_series) # Obtain the model score for the system
 
         conds = np.array([float(val) for val in contents[0]]) # Convert the system's initial conditions into a numpy array of float values as this is what is expected by the model.simulate() function
         sim_data = model.simulate(conds,time_series) # Create the forward simulated data. This uses the original initial conditions evolved with the model output equations to obtain new data

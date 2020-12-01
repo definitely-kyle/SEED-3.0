@@ -21,6 +21,7 @@ try:
     from urllib.request import urlopen # Used for the addition of the Durham University logo to the GUI
     import ssl # Needed for the Durham University logo to open properly
     import pysindy as ps
+    from sklearn.linear_model import Lasso
     import ast # ast is used to find the class name to use when instantiating the optimization variable
     from scipy.signal import savgol_filter # Although unused in the code, this is needed for the smoothed finite difference differentiation option to work
     from scipy.integrate import odeint # used when generating the lorenz data for the "Generate Lorenz System" option
@@ -113,23 +114,31 @@ def advanced():
     window.geometry(size) # Set GUI window's size
 
 # Get optimizer selection class name
-def get_od_class(selection):
-    if(selection == "opt"):
-        opt = str(opt_var.get()) # Get the optimization option selected
+def get_opt_class():
+    opt = str(opt_var.get()) # Get the optimization option selected
+    if (opt != "Lasso"):
         fil = open(pysindypath+"/optimizers/"+opt+".py") # Open the optimization option file
 
         # Read the file, return all of the names of the classes in the file and return the class name for the option
         contents = fil.read()
         par = ast.parse(contents)
         classes = [node.name for node in ast.walk(par) if isinstance(node, ast.ClassDef)]
+    else:
+        classes = ["Lasso"]
 
     return classes[0]
 
 # Get optimization option variables and update on advanced option panel
 def get_opt(command):
-    class_name = get_od_class("opt")
-    opt_inst = eval("ps."+class_name+"()") # Instantiate the optimization option
-    opt_params = opt_inst.get_params() # Get the inbuilt parameters and values from the instance (inbuilt function to the optimizer class - *Not the same for the differentiation options*)
+    class_name = get_opt_class()
+    print("optimiser class is " + class_name) #debug
+
+    if (class_name == "Lasso"):
+        opt_inst = Lasso()
+        opt_params = opt_inst.get_params()
+    else:
+        opt_inst = eval("ps."+class_name+"()") # Instantiate the optimization option
+        opt_params = opt_inst.get_params() # Get the inbuilt parameters and values from the instance (inbuilt function to the optimizer class - *Not the same for the differentiation options*)
 
     disp_opt_select(opt_params)
 
@@ -270,9 +279,12 @@ def d_inst(widget_list):
 
 # Instantiate the optimizer
 def o_inst(widget_list):
-    class_name = get_od_class("opt")
+    class_name = get_opt_class()
+    if (class_name == "Lasso"):
+        instance = "Lasso("  
+    else:
+        instance = "ps."+class_name+"(" # Text string to instantiate after looping through populating with parameter values
 
-    instance = "ps."+class_name+"(" # Text string to instantiate after looping through populating with parameter values
     count = 0
 
     for widget in widget_list: # Form executable line in a string
@@ -661,8 +673,7 @@ def comp():
 
     # Try to instantiate the differentiator with the advanced variables. Stop the computation if an invalid variable is input (will throw an error when instantiating)
     try:
-        diff = d_inst(diff_widgets) 
-        print(diff)  #debugging
+        diff = d_inst(diff_widgets)
     except Exception:
         messagebox.showerror(title="Invalid Option", message="You have input an invalid differentation variable, check the PySINDy documentation for valid options.\n\nExiting the computation.")
         return None
@@ -813,7 +824,7 @@ if "base.py" in temp_options:
     temp_options.remove("base.py")
 if "sindy_optimizer.py" in temp_options:
     temp_options.remove("sindy_optimizer.py")
-#temp_options.append("Lasso") # This would be where more options are added if required, e.g. the Lasso method
+temp_options.append("Lasso") # This would be where more options are added if required, e.g. the Lasso method
 ext = ".py"
 opt_options = [eg.split(ext, 1)[0] for eg in temp_options] # Remove the extension from all of the remaining options
 opt_options.sort()
