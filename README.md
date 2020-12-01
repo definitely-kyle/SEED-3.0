@@ -2,13 +2,16 @@
 
 **SEED**: **S**oftware for the **E**xtraction of **E**quations from **D**ata
 
-**IN PROGRESS**
-* Unit Testing
-* ~~Adding Lasso Optimisation~~
+**DONE**
+* Lasso Optimisation
 
-**TO DO**
-* Analyse Noise Rejection
+**IN PROGRESS**
+* Custom Feature Library
+* Unit Testing
 * General Tidying and Moving to Base Library and Main
+
+**POSSIBLE FUTURE DEVELOPMENT**
+* Analysing Noise Rejection and Model Scoring
 
 ## Table of contents
 * [Introduction](#introduction)
@@ -19,8 +22,6 @@
 	* [Examples](#examples)
 	* [Using your own data](#using-your-own-data)
 * [Model Output](#model-output)
-* [Future developments](#future-developments)
-* [License](#license)
 
 ## Introduction
 SEED is a package written in Python that allows for the extraction of governing differential equations from data. It has been written with use of the [PySINDy](https://github.com/dynamicslab/pysindy) package, written by Brian de Silva et al.
@@ -97,14 +98,3 @@ The second output window displays two sets of plots. The first set shows the coe
 Pressing the save button on this window saves both a _.png_ of the output plots and a _.csv_ of the output coefficient matrix to the filepath selected.
 
 Both example output windows are the MacOS versions.
-
-## Future Developments
-As well as the current features of PySINDy integrated into SEED, there are a number of features currently in development to be released in the near future. This includes but is not limited to:
-
-* Integration of the Lasso method for system optimization
-* Loading a previous model from the saved .csv file
-* The ability to use a custom feature library
-* The ability to combine feature librarys
-* Integrating SINDy with control
-* The usage of different forms of input data, as shown on the PySINDy [feature overview](https://github.com/dynamicslab/pysindy/blob/master/examples/1_feature_overview.ipynb)
-* Adding tooltips explaining each of the options
