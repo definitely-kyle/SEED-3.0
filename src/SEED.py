@@ -671,8 +671,39 @@ def comp():
 
 #################################################################################
 # GUI design
-
+# Constants 
 bgc = "lightgray" # GUI background colour
+
+# Functions 
+def init_buttons():
+    # Add frame for all buttons on the GUI
+    button_fram = tk.Frame(window,bg=bgc,bd=2,relief="sunken",pady=10,width=fram_w)
+
+    # Tutorial button
+    tut_button = tk.Button(button_fram,text="Tutorial",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=lambda : webbrowser.open("https://github.com/M-Vause/SEED2.0"))
+    tut_button.grid(row=0,column=0,columnspan=2,sticky="EW")
+
+    # Show advanced options button
+    adv_button = tk.Button(button_fram,text="Show Advanced",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=advanced)
+    adv_button.grid(row=0,column=2,columnspan=2,sticky="EW")
+
+    # Blank line in the frame
+    blank_line1 = tk.Label(button_fram,text=" ",font=("Times",15),width=round(line_w/2),highlightbackground=bgc,bg=bgc)
+    blank_line1.grid(row=1,column=0,columnspan=2)
+
+    # Reset advanced options button
+    reset_button = tk.Button(button_fram,text="Reset to Defaults",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=reset)
+    reset_button.grid(row=1,column=2,columnspan=2,sticky="EW")
+
+    # Blank line in the frame
+    blank_line2 = tk.Label(button_fram,text=" ",font=("Times",15),width=line_w,highlightbackground=bgc,bg=bgc)
+    blank_line2.grid(row=2,column=0,columnspan=4)
+
+    # Compute button
+    comp_button = tk.Button(button_fram,text="Compute",font=("Times",15,"bold"),width=10,highlightbackground=bgc,command=comp)
+    comp_button.grid(row=3,column=0,columnspan=4,sticky="EW")
+
+    button_fram.grid(row=7,column=0,columnspan=4,padx=5,sticky="SEW") # Display the frame on the GUI - ,rowspan=4
 
 # Size Correction based on operating system
 if platform == "darwin": # MacOS
@@ -747,7 +778,7 @@ sel_options.append("Generate Lorenz System") # Add this option to the dropdown o
 sel_options.append("Own Data") # Add this option to the dropdown options
 sel_var.set("data_Lorenz3d.csv") # Set the deafualt selected value for the data dropdown
 
-    # Create, configure and display the data selection dropdown on the GUI
+# Create, configure and display the data selection dropdown on the GUI
 select_menu = tk.OptionMenu(window,sel_var,*sel_options,command=toggle_browser)
 select_menu.config(width=drop_w,font=("Times",15),bg=bgc)
 select_menu.grid(row=2,column=1,columnspan=3,sticky="nsew")
@@ -783,7 +814,7 @@ opt_options.sort()
 opt_var.set("stlsq") # Set the default value for the optimization option
 temp_options.clear()
 
-    # Create, configure and display the optimization option dropdown on the GUI
+# Create, configure and display the optimization option dropdown on the GUI
 opt_menu = tk.OptionMenu(window,opt_var,*opt_options,command=get_opt)
 opt_menu.config(width=drop_w,font=("Times",15),bg=bgc)
 opt_menu.grid(row=5,column=1,columnspan=3,sticky="nsew")
@@ -831,34 +862,7 @@ feat_menu = tk.OptionMenu(window,feat_var,*feat_options)
 feat_menu.config(width=drop_w,font=("Times",15),bg=bgc)
 feat_menu.grid(row=6,column=1,columnspan=3,sticky="nsew")
 
-# Add frame for all buttons on the GUI
-button_fram = tk.Frame(window,bg=bgc,bd=2,relief="sunken",pady=10,width=fram_w)
-
-# Tutorial button
-tut_button = tk.Button(button_fram,text="Tutorial",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=lambda : webbrowser.open("https://github.com/M-Vause/SEED2.0"))
-tut_button.grid(row=0,column=0,columnspan=2,sticky="EW")
-
-# Show advanced options button
-adv_button = tk.Button(button_fram,text="Show Advanced",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=advanced)
-adv_button.grid(row=0,column=2,columnspan=2,sticky="EW")
-
-# Blank line in the frame
-blank_line1 = tk.Label(button_fram,text=" ",font=("Times",15),width=round(line_w/2),highlightbackground=bgc,bg=bgc)
-blank_line1.grid(row=1,column=0,columnspan=2)
-
-# Reset advanced options button
-reset_button = tk.Button(button_fram,text="Reset to Defaults",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=reset)
-reset_button.grid(row=1,column=2,columnspan=2,sticky="EW")
-
-# Blank line in the frame
-blank_line2 = tk.Label(button_fram,text=" ",font=("Times",15),width=line_w,highlightbackground=bgc,bg=bgc)
-blank_line2.grid(row=2,column=0,columnspan=4)
-
-# Compute button
-comp_button = tk.Button(button_fram,text="Compute",font=("Times",15,"bold"),width=10,highlightbackground=bgc,command=comp)
-comp_button.grid(row=3,column=0,columnspan=4,sticky="EW")
-
-button_fram.grid(row=7,column=0,columnspan=4,padx=5,sticky="SEW") # Display the frame on the GUI - ,rowspan=4
+init_buttons() # Initialise buttons
 
 # Frame for optimization option variable selection (advanced options)
 opt_fram = tk.Frame(window,bd=2,bg=bgc,width=5)
