@@ -4,6 +4,7 @@
 # Import packages
 import numpy as np
 import csv
+import matplotlib.pyplot as plt
 
 # Switch function for diff method
 def switch(arg):
@@ -41,4 +42,55 @@ def read_file(selection, to_open):
     with open(to_read, newline='') as csvfile:
         data = list(csv.reader(csvfile))  
 
-    return(data)
+    return data
+
+def create_plot(time_series, contents, variable_names, coefs, feats, sim_data):
+    # Create a figure with the correct number of subplots
+    fig, axs = plt.subplots(contents.shape[1], 2, sharex=False, sharey=False, figsize=(11, 2*len(variable_names)))
+
+    # Plot the data on the subplots
+    for i in range(contents.shape[1]): # For every row of subplots
+        if(len(variable_names) == 1): # This is needed to enable the plotting of one dimensional systems
+            dim = (1)
+        else:
+            dim = (i, 1)
+
+        # Plot the input data and the forward simulated data obtained after creating the model
+        axs[dim].plot(time_series, contents[:, i], 'k', label='input data')
+        axs[dim].plot(time_series, sim_data[:, i], 'r--', label='model simulation')
+        if(i == 0):
+            axs[dim].legend()
+        axs[dim].set(xlabel='t', ylabel=variable_names[i].format(i))
+
+        # Loop through the coefficient matrix to extract the non zero values
+        coef_plt = [] # List of non zero coefficients (coefficient values)
+        desc_plt = [] # List of descriptors for the non zero variables
+        row = coefs[i]
+        for item in range(len(coefs[0])):
+            val = row[item]
+            des = feats[item]
+            if val != 0:
+                coef_plt.append(val)
+                desc_plt.append(des)
+
+        if(len(variable_names) == 1): # This is needed to enable the plotting of one dimensional systems
+            dim = (0)
+        else:
+            dim = (i, 0)
+
+        # Plot the non zero coefficient values as a bar plot
+        axs[dim].bar(desc_plt,coef_plt)
+        axs[dim].axhline(y=0, color='k')
+        axs[dim].set_title("d" + str(variable_names[i]) + "/dt",size=10)
+
+        # If the number of output coefficients is greater than 6, change the font size to 8
+        if len(coef_plt) > 6:
+            size = 8
+        else:
+            size = 10
+        plot_label = axs[dim].get_xticklabels() # Get all of the font label objects for the subplot
+        [each_label.set_fontsize(size) for each_label in plot_label] # Set the font size of the specific subplot
+
+    fig.subplots_adjust(hspace=0.3) # Add vertical space in between each row of subplots so they don't overlap
+    fig.tight_layout() # Remove excess whitespace from the top and bottom of the figure
+    return fig, axs

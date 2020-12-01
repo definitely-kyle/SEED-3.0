@@ -4,7 +4,7 @@
 
 # Import all required modules
 try:
-    from base import switch, clean_contents, read_file # A library for some base functions to reduce clutter
+    from base import switch, clean_contents, read_file, create_plot # A library for some base functions to reduce clutter
     from derivative import dxdt # Derivative package developed alongside PySINDy
     import pytest
 
@@ -555,54 +555,7 @@ def show_plots(contents, sim_data, coefs, feats, time_series, variable_names, wi
     canvas_frame.rowconfigure(1, weight=1)
     canvas_frame.columnconfigure(1, weight=1)
 
-    # Create a figure with the correct number of subplots
-    fig, axs = plt.subplots(contents.shape[1], 2, sharex=False, sharey=False, figsize=(11, 2*len(variable_names)))
-
-    # Plot the data on the subplots
-    for i in range(contents.shape[1]): # For every row of subplots
-        if(len(variable_names) == 1): # This is needed to enable the plotting of one dimensional systems
-            dim = (1)
-        else:
-            dim = (i, 1)
-
-        # Plot the input data and the forward simulated data obtained after creating the model
-        axs[dim].plot(time_series, contents[:, i], 'k', label='input data')
-        axs[dim].plot(time_series, sim_data[:, i], 'r--', label='model simulation')
-        if(i == 0):
-            axs[dim].legend()
-        axs[dim].set(xlabel='t', ylabel=variable_names[i].format(i))
-
-        # Loop through the coefficient matrix to extract the non zero values
-        coef_plt = [] # List of non zero coefficients (coefficient values)
-        desc_plt = [] # List of descriptors for the non zero variables
-        row = coefs[i]
-        for item in range(len(coefs[0])):
-            val = row[item]
-            des = feats[item]
-            if val != 0:
-                coef_plt.append(val)
-                desc_plt.append(des)
-
-        if(len(variable_names) == 1): # This is needed to enable the plotting of one dimensional systems
-            dim = (0)
-        else:
-            dim = (i, 0)
-
-        # Plot the non zero coefficient values as a bar plot
-        axs[dim].bar(desc_plt,coef_plt)
-        axs[dim].axhline(y=0, color='k')
-        axs[dim].set_title("d" + str(variable_names[i]) + "/dt",size=10)
-
-        # If the number of output coefficients is greater than 6, change the font size to 8
-        if len(coef_plt) > 6:
-            size = 8
-        else:
-            size = 10
-        plot_label = axs[dim].get_xticklabels() # Get all of the font label objects for the subplot
-        [each_label.set_fontsize(size) for each_label in plot_label] # Set the font size of the specific subplot
-
-    fig.subplots_adjust(hspace=0.3) # Add vertical space in between each row of subplots so they don't overlap
-    fig.tight_layout() # Remove excess whitespace from the top and bottom of the figure
+    fig, _ = create_plot(time_series, contents, variable_names, coefs, feats, sim_data)
 
     # set up a canvas with scrollbars
     canvas = tk.Canvas(canvas_frame)
@@ -625,7 +578,7 @@ def show_plots(contents, sim_data, coefs, feats, time_series, variable_names, wi
     mplCanvas = figAgg.get_tk_widget()
 
     # Connect figure with scrolling region
-    cwid = canvas.create_window(0, 0, window=mplCanvas, anchor=tk.constants.NW)
+    _ = canvas.create_window(0, 0, window=mplCanvas, anchor=tk.constants.NW) #replace _ with cwid if needed
     canvas.config(scrollregion=canvas.bbox(tk.constants.ALL),width=fig_w,height=fig_h)
 
     # Add in the toolbar to the output window
