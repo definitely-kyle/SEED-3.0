@@ -2,9 +2,11 @@
 
 **SEED**: **S**oftware for the **E**xtraction of **E**quations from **D**ata
 
-**TO DO**
+**IN PROGRESS**
 * Unit Testing
-* Adding Optimisers (LASSO etc.)
+* ~~Adding Lasso Optimisation~~
+
+**TO DO**
 * Analyse Noise Rejection
 * General Tidying and Moving to Base Library and Main
 
