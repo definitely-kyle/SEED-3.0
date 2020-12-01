@@ -147,8 +147,9 @@ def disp_opt_select(opt_params):
     global opt_widgets
 
     opt_widgets = []
-    opt_fram.destroy() # Remove all current widgets in advanced option panel to repopulate with new selection variables
-
+    opt_fram = None
+    if opt_fram is not None:
+        opt_fram.destroy() # Remove all current widgets in advanced option panel to repopulate with new selection variables
     opt_fram = tk.Frame(window,bd=2,bg=bgc,width=5) # Rebuild the optimization option frame
 
     ofram_label = tk.Label(opt_fram,text="Optimization Option Variables",font=("Times",18,"bold"),pady=10,bg=bgc)
@@ -203,8 +204,9 @@ def disp_diff_select(diff_params, diff_param_def):
     global diff_widgets
 
     diff_widgets = []
-    diff_fram.destroy() # Remove all current widgets in advanced option panel to repopulate with new selection variables
-
+    diff_fram = None
+    if diff_fram is not None:
+        diff_fram.destroy() # Remove all current widgets in advanced option panel to repopulate with new selection variables
     diff_fram = tk.Frame(window,bd=2,bg=bgc,width=5) # Rebuild the differentiation option frame
 
     dfram_label = tk.Label(diff_fram,text="Differentiation Option kwargs",font=("Times",18,"bold"),pady=10,bg=bgc)
@@ -684,6 +686,7 @@ def init_buttons():
     tut_button.grid(row=0,column=0,columnspan=2,sticky="EW")
 
     # Show advanced options button
+    global adv_button
     adv_button = tk.Button(button_fram,text="Show Advanced",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=advanced)
     adv_button.grid(row=0,column=2,columnspan=2,sticky="EW")
 
