@@ -300,8 +300,6 @@ def o_inst(widget_list):
 
     inst = eval(instance) # Instantiate the line
 
-    print(inst) #debugging
-
     return inst
 
 # Get feature library selection class name
@@ -731,7 +729,7 @@ else:
     print(platform + " detected")
     min_w = 690
     max_w = 1500
-    min_h = 650
+    min_h = 750
     max_h = 800
     drop_w = 30
     fram_w = 55
@@ -749,7 +747,7 @@ window.maxsize(max_w,max_h)
 window.config(bg=bgc)
 
 # Add Durham University logo to GUI
-if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)): # This is needed to validate the server identity for the pictuer URL
+if (not os.environ.get('PYTHONHTTPSVERIFY', '') and getattr(ssl, '_create_unverified_context', None)): # This is needed to validate the server identity for the picture URL
     ssl._create_default_https_context = ssl._create_unverified_context
 
 try:
@@ -833,7 +831,7 @@ diff_label.grid(row=4,column=0,sticky="E")
 
 diff_var = tk.StringVar(window) # Variable storing the selected value in the dropdown
 
-# Differentiator is based on the derivative package rather than PySINDy
+# Differentiator is based on the derivative package rather than from the PySINDy local files
 diff_options = ["finite_difference", "savitzky_golay", "spectral", "spline", "trend_filtered"] # Five derivative options provided by derivative package
 diff_options.sort()
 #diff_options.append("pre-computed") # This would be where more options are added if required, e.g. pre-computed derivatives
