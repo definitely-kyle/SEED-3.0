@@ -4,7 +4,7 @@
 
 # Import all required modules
 try:
-    from base import switch, clean_contents, read_file, create_plot # A library for some base functions to reduce clutter
+    from base import * # A library for some base functions to reduce clutter
     from derivative import dxdt # Derivative package developed alongside PySINDy
     import pytest
 
@@ -55,6 +55,7 @@ diff_widgets = [] # Storing information for the advanced differentiation option 
                         #for other variables: [label widget with name of variable,type of variable,entry box widget with input value from GUI]
 
                         #When the item is "type of variable", that means the type of the inbuilt variable in the actual optimization/differentiation class
+feat_widgets = []
 
 
 # Any functions used throughout SEED 2.0
@@ -147,7 +148,6 @@ def disp_opt_select(opt_params):
     global opt_widgets
 
     opt_widgets = []
-    opt_fram = None
     if opt_fram is not None:
         opt_fram.destroy() # Remove all current widgets in advanced option panel to repopulate with new selection variables
     opt_fram = tk.Frame(window,bd=2,bg=bgc,width=5) # Rebuild the optimization option frame
@@ -173,10 +173,9 @@ def disp_opt_select(opt_params):
 
         opt_widgets[x][5-len(opt_widgets[x])].grid(row=x+1,column=1) # Put the newly created widget on the frame
 
-    opt_fram.grid(row=4,column=4,rowspan=len(var_list),padx=5,sticky="W") # Display the optimization option frame on the GUI
+    opt_fram.grid(row=0,column=4,rowspan=len(var_list),padx=5,sticky="W") # Display the optimization option frame on the GUI
 
 def get_diff(command):
-
     # Returns a number 0-4 based on method selected ("finite_difference", "savitzy_golay", etc...)
     method = switch(command)
 
@@ -204,12 +203,11 @@ def disp_diff_select(diff_params, diff_param_def):
     global diff_widgets
 
     diff_widgets = []
-    diff_fram = None
     if diff_fram is not None:
         diff_fram.destroy() # Remove all current widgets in advanced option panel to repopulate with new selection variables
     diff_fram = tk.Frame(window,bd=2,bg=bgc,width=5) # Rebuild the differentiation option frame
 
-    dfram_label = tk.Label(diff_fram,text="Differentiation Option kwargs",font=("Times",18,"bold"),pady=10,bg=bgc)
+    dfram_label = tk.Label(diff_fram,text="Differentiation Option Kwargs",font=("Times",18,"bold"),pady=10,bg=bgc)
     dfram_label.grid(row=0,column=0,sticky="W")
 
     for x in range(len(diff_params)): # Create a widget for all inbuilt parameters
@@ -235,19 +233,109 @@ def disp_diff_select(diff_params, diff_param_def):
         blank = tk.Label(diff_fram,text=" ",font=("Times",15,"bold"),pady=10,bg=bgc)
         blank.grid(row=y,column=0)
     
-    diff_fram.grid(row=0,column=4,rowspan=4,padx=5,sticky="W") # Display the differentiation option frame on the GUI
+    diff_fram.grid(row=11,column=0,rowspan=4, columnspan=3,padx=5,sticky="W") # Display the differentiation option frame on the GUI
+
+# Get feature library selection class name
+def get_feat_class():
+    feat = str(feat_var.get()) # Get the selected feature library option
+    if (feat != "custom_library"):
+        fil = open(pysindypath+"/feature_library/"+feat+".py") # Open the selected option's code file
+
+        # Read the code file and return the name of the feature library class (Not the same as the name of the file)
+        contents = fil.read()
+        par = ast.parse(contents)
+        classes = [node.name for node in ast.walk(par) if isinstance(node, ast.ClassDef)]
+    else:
+        classes = ["CustomLibrary"]
+    return classes[0]
+
+def get_feat(command):
+    class_name = get_feat_class()
+    feat_params = []
+    feat_defs = []
+    if (class_name == "CustomLibrary"):
+        feat_params = ["library_functions", "function_names", "interaction_only"]
+        feat_defs = ["[lambda x : np.exp(x), lambda x,y : np.sin(x+y)]", "", True]
+    elif (class_name == "PolynomialLibrary"):
+        feat_params = ["degree", "include_interaction", "interaction_only", "include_bias", "order"]
+        feat_defs = [2, True, False, True, 'C']
+    elif (class_name == "FourierLibrary"):
+        feat_params = ["n_frequencies", "include_sin", "include_cos"]
+        feat_defs = [1, True, True]
+    elif (class_name == "IdentityLibrary"):
+        feat_params = []
+        feat_defs = []
+    
+    disp_feat_select(feat_params, feat_defs)
+
+# Display the feature library variables on advanced option panel
+def disp_feat_select(feat_params, feat_param_def):
+    global feat_fram
+    global feat_widgets
+
+    feat_widgets = []
+    if feat_fram is not None:
+        feat_fram.destroy() # Remove all current widgets in advanced option panel to repopulate with new selection variables
+    feat_fram = tk.Frame(window,bd=2,bg=bgc,width=5) # Rebuild the feature library frame
+
+    ffram_label = tk.Label(feat_fram,text="Feature Library Options",font=("Times",18,"bold"),pady=10,bg=bgc)
+    ffram_label.grid(row=0,column=0,sticky="W")
+
+    for x in range(len(feat_params)): # Create a widget for all inbuilt parameters
+        var_label = tk.Label(feat_fram,text=feat_params[x],font=("Times",15,"bold"),pady=10,bg=bgc) # Label widget for all inbuilt parameters containing the parameter name
+        var_label.grid(row=x+1,column=0,sticky="E")
+
+        if(x+1>len(feat_param_def)): # If there's an empty variable, create an empty entry box
+            feat_widgets.append([var_label,type(""),tk.Entry(feat_fram,font=("Times",15),highlightbackground=bgc,width=drop_w)])
+        elif str(feat_param_def[x]) == "True" or str(feat_param_def[x]) == "False": # Create dropdown for boolean variables
+            fvar_x = tk.StringVar(feat_fram) # The value of the inbuilt parameter
+            fvar_options = ["True", "False"] # The dropdown has the options True or False
+            fvar_x.set(str(feat_param_def[x])) # Set the dropdown selection to the default value of the parameter
+
+            feat_widgets.append([var_label,tk.OptionMenu(feat_fram,fvar_x,*fvar_options),type(feat_param_def[x]),fvar_x])
+            feat_widgets[x][1].config(width=drop_w,font=("Times",15),bg=bgc) # Format the dropdown widget
+        else: # Create an entry box for any other variables and enter default value
+            feat_widgets.append([var_label,type(feat_param_def[x]),tk.Entry(feat_fram,font=("Times",15),highlightbackground=bgc,width=drop_w)])
+            print(feat_param_def[x])
+            feat_widgets[x][2].insert(0, feat_param_def[x]) # Insert the default parameter value to the entry widget
+
+        feat_widgets[x][5-len(feat_widgets[x])].grid(row=x+1,column=1) # Put the newly created widget on the frame
+
+    for y in range(len(feat_params)+1,4): # Fill in the rest of the frame with blank lines, the frame is 5 lines long (including the title)
+        blank = tk.Label(feat_fram,text=" ",font=("Times",15,"bold"),pady=10,bg=bgc)
+        blank.grid(row=y,column=0)
+    
+    feat_fram.grid(row=11,column=4,rowspan=6, columnspan=3,padx=5,sticky="W") # Display the feature library option frame on the GUI
 
 # Instantiate the feature library
-def feat_inst():
+def feat_inst(widget_list):
     class_name = get_feat_class() # Get the class name of the selected feature library
-    instance = "ps."+class_name+"()" # Instantiate the selected feature library
-    inst = eval(instance) 
-    return inst # Returns the instance
 
-# Reset opt and diff advanced options to default values
-def reset():
-    get_opt("<command>")
-    get_diff("<command>")
+    instance = ""
+    count = 0
+    for widget in widget_list: # Form executable line in a string
+        value = None # Input value from GUI
+        try: # For option menu widgets
+            value = widget[3].get()
+        except Exception: # For entry widgets
+            value = widget[2].get()
+
+        if(str(widget[-2]) == "<class 'str'>" and not value.startswith("[")): 
+            value = "\"" + value + "\""
+
+        var_name = widget[0].cget("text") # Name of the inbuilt parameter, stored in the label widgets on the GUI
+
+        if(not value == "\"\""): # Entry widgets for parameters with no inbuilt value store the value as ""
+            instance = instance + var_name + "=" + value
+            if(count+1<len(widget_list)):
+                instance = instance + ","
+        
+        count += 1
+
+    feat = "ps."+class_name+"("+instance+")" # Instantiate the selected feature library
+    print(feat)
+    inst = eval(feat) 
+    return inst # Returns the instance
 
 # Instantiate the differentiator
 def d_inst(widget_list):
@@ -314,17 +402,6 @@ def o_inst(widget_list):
     inst = eval(instance) # Instantiate the line
 
     return inst
-
-# Get feature library selection class name
-def get_feat_class():
-    feat = str(feat_var.get()) # Get the selected feature library option
-    fil = open(pysindypath+"/feature_library/"+feat+".py") # Open the selected option's code file
-
-    # Read the code file and return the name of the feature library class (Not the same as the name of the file)
-    contents = fil.read()
-    par = ast.parse(contents)
-    classes = [node.name for node in ast.walk(par) if isinstance(node, ast.ClassDef)]
-    return classes[0]
 
 # Create output window - containing coefficient value table, ouput equations and model score
 def show_output(table_size, coefs, feats, variable_names, window_name, score):
@@ -452,17 +529,9 @@ def pop_table(tv, coefs, feats):
             new_val.append(str(coefs[col,item])) # Adding values to the ROW, one at a time
         tv.insert('', 'end', text=str(feats[item]), values=new_val) # Add the row of values to the output table
 
-# Lorenz system for generation - This is taken from the PySINDy feature overview file
-def lorenz(z, t):
-    return [
-        10 * (z[1] - z[0]),
-        z[0] * (28 - z[2]) - z[1],
-        z[0] * z[1] - (8 / 3) * z[2]
-    ]
-
 # Pop up window for Lorenz generation
 def lorenz_gen():
-    dt,t_min,t_max,conds = show_lorenz() # Shows the Lorenz system generation popup window, returning the input values. By default the values are the same as the data generated in the PySINDy feature overview file
+    dt, t_min, t_max, conds = show_lorenz() # Shows the Lorenz system generation popup window, returning the input values. By default the values are the same as the data generated in the PySINDy feature overview file
     
     # Convert the returned system values to the correct types
     dt = float(dt) # The time step of the data readings
@@ -474,71 +543,6 @@ def lorenz_gen():
     contents = odeint(lorenz, conds, time_series) # Generate the data for the user defined Lorenz system
     points_no = ceil((t_max-t_min)/dt) # Find the number of generated data points
     return contents, dt, points_no, time_series
-
-# Create Lorenz generation window
-def show_lorenz():
-    lorenz_window = tk.Tk() # Create the Lorenz generation popup window
-    lorenz_window.title("Lorenz Data Generation")
-    lorenz_window.config(bg=bgc)
-
-    # Create widgets for dt input
-    dt_label = tk.Label(lorenz_window,text="dt",font=("Times",15,"bold"),bg=bgc)
-    dt_label.grid(row=0,column=0,sticky="E")
-    dt_entry = tk.Entry(lorenz_window,font=("Times",15),highlightbackground=bgc,width=10)
-    dt_entry.grid(row=0,column=1,columnspan=2,sticky="EW")
-    dt_entry.insert(0,"0.002")
-    
-    # Create widgets for start and end times
-    time_label = tk.Label(lorenz_window,text="Times",font=("Times",15,"bold"),bg=bgc)
-    time_label.grid(row=1,column=0,sticky="E")
-    time_entry1 = tk.Entry(lorenz_window,font=("Times",15),highlightbackground=bgc,width=5)
-    time_entry1.grid(row=1,column=1)
-    time_entry1.insert(0,"0")
-    time_entry2 = tk.Entry(lorenz_window,font=("Times",15),highlightbackground=bgc,width=5)
-    time_entry2.grid(row=1,column=2)
-    time_entry2.insert(0,"10")
-
-    # Create widgets for the initial conditions
-    conds_label = tk.Label(lorenz_window,text="Initial Conditions x,y,z",font=("Times",15,"bold"),bg=bgc)
-    conds_label.grid(row=2,column=0,sticky="E")
-    conds_entry = tk.Entry(lorenz_window,font=("Times",15),highlightbackground=bgc,width=10)
-    conds_entry.grid(row=2,column=1,columnspan=2,sticky="EW")
-    conds_entry.insert(0,"-8,8,27")
-
-    # Create widgets to display the number of generated points
-    number = ceil((float(time_entry2.get())-float(time_entry1.get()))/float(dt_entry.get()))
-    points_label = tk.Label(lorenz_window,text="Number of Points: " + str(number),font=("Times",15,"bold"),bg=bgc)
-    points_label.grid(row=3,column=0,columnspan=2,sticky="W")
-
-    # Create the button that continues onto generating the system from the input conditions
-    cont_button = tk.Button(lorenz_window,text="Continue",font=("Times",15),width=10,highlightbackground=bgc,command=lambda: lorenz_window.quit())
-    cont_button.grid(row=3,column=2,sticky="EW")
-
-    # Bind any key press (within the popup window) with updating the number of generated points
-    lorenz_window.bind('<Key>', lambda event: update_number(event, dt_entry, time_entry1, time_entry2, points_label))
-    lorenz_window.mainloop()
-
-    # Before destroying the popup window, grab the input conditions
-    dt = dt_entry.get()
-    t_min = time_entry1.get()
-    t_max = time_entry2.get()
-    conds = conds_entry.get()
-
-    lorenz_window.destroy() # Destroy the window
-
-    return dt, t_min, t_max, conds
-
-# Update number of points display on generate Lorenz window
-def update_number(event, dt_entry, time_entry1, time_entry2, points_label):
-    try: 
-        number = (float(time_entry2.get())-float(time_entry1.get()))/float(dt_entry.get()) # Calculate the number of points based on the input values
-        points_label.configure(text = "Number of Points: " + str(ceil(number)))
-    except ZeroDivisionError: # If one of the numbers is equal to 0
-        points_label.configure(text = "Number of Points: ")
-    except ValueError: # If one of the input values are non numeric
-        points_label.configure(text = "Number of Points: ")
-    except Exception as e: # Any other exception. This shouldn't happen
-        print("Error!\n" + str(e))
 
 # Display the figure with the original data vs obtained model
 def show_plots(contents, sim_data, coefs, feats, time_series, variable_names, window_name):
@@ -633,7 +637,7 @@ def comp():
         return None
 
     # Instatiate the feature library
-    feat = feat_inst()
+    feat = feat_inst(feat_widgets)
 
     # If "Generate Lorenz System" is selected, show the Lorenz popup window and generate with the input conditions. Stop the computation if an invalid condition is input
     if(window_name == "Generate Lorenz System"):
@@ -706,8 +710,15 @@ def init_buttons():
     comp_button = tk.Button(button_fram,text="Compute",font=("Times",15,"bold"),width=10,highlightbackground=bgc,command=comp)
     comp_button.grid(row=3,column=0,columnspan=4,sticky="EW")
 
-    button_fram.grid(row=7,column=0,columnspan=4,padx=5,sticky="SEW") # Display the frame on the GUI - ,rowspan=4
+    button_fram.grid(row=7,column=0,columnspan=4,padx=5,sticky="W") # Display the frame on the GUI - ,rowspan=4
 
+# Reset opt and diff advanced options to default values
+def reset():
+    get_opt("<command>")
+    get_diff("<command>")
+    get_feat("<command>")
+
+# Main GUI Build
 # Size Correction based on operating system
 if platform == "darwin": # MacOS
     print("MacOS detected")
@@ -726,15 +737,15 @@ else:
     print(platform + " detected")
     min_w = 690
     max_w = 1500
-    min_h = 750
-    max_h = 800
+    min_h = 550
+    max_h = 850
     drop_w = 30
     fram_w = 55
     line_w = 60
     col_width = 200
     fig_w = 1115
     fig_h = 645
-    adv_size = "1380x700"
+    adv_size = "1380x850"
 
 # Create the main GUI window
 window = tk.Tk()
@@ -757,16 +768,16 @@ try:
 
     tk_img = ImageTk.PhotoImage(pil_img)
     label = tk.Label(window, image=tk_img, bg=bgc) # Add the image to a label widget to display on the GUI
-    label.grid(row=0,column=0,padx=5, pady=5,rowspan=2)
+    label.grid(row=0,column=0,padx=5, pady=5,rowspan=2, sticky="W")
 except Exception: # If anything goes wrong, don't display the logo, probably internet connection error
     print("Durham University Logo Not Printing")
 
 # Add main title to the GUI
 main_label1 = tk.Label(window,text="Extracting Equations",font=("Times",30,"bold","underline"),padx=5,pady=10,bg=bgc)
-main_label1.grid(row=0,column=1,columnspan=3,sticky="S")
+main_label1.grid(row=0,column=1,columnspan=1,sticky="NW")
 
 main_label2 = tk.Label(window,text="from Data",font=("Times",30,"bold","underline"),padx=5,pady=10,bg=bgc)
-main_label2.grid(row=1,column=1,columnspan=3,sticky="N")
+main_label2.grid(row=1,column=1,columnspan=1,sticky="NW")
 
 # Creating the label and dropdown for data selection
 select_label = tk.Label(window,text="Example/Own Data:",font=("Times",15,"bold"),pady=10,bg=bgc)
@@ -784,7 +795,7 @@ sel_var.set("data_Lorenz3d.csv") # Set the deafualt selected value for the data 
 # Create, configure and display the data selection dropdown on the GUI
 select_menu = tk.OptionMenu(window,sel_var,*sel_options,command=toggle_browser)
 select_menu.config(width=drop_w,font=("Times",15),bg=bgc)
-select_menu.grid(row=2,column=1,columnspan=3,sticky="nsew")
+select_menu.grid(row=2,column=1,columnspan=3,sticky="NSEW")
 
 # All file browser widgets
 file_button = tk.Button(window,text="Select File",font=("Times",15),width=15,highlightbackground=bgc,command=browse)
@@ -810,7 +821,7 @@ if "base.py" in temp_options:
     temp_options.remove("base.py")
 if "sindy_optimizer.py" in temp_options:
     temp_options.remove("sindy_optimizer.py")
-temp_options.append("Lasso") # This would be where more options are added if required, e.g. the Lasso method
+temp_options.append("Lasso") 
 ext = ".py"
 opt_options = [eg.split(ext, 1)[0] for eg in temp_options] # Remove the extension from all of the remaining options
 opt_options.sort()
@@ -850,8 +861,8 @@ if "__pycache__" in temp_options:
     temp_options.remove("__pycache__")
 if "__init__.py" in temp_options:
     temp_options.remove("__init__.py")
-if "custom_library.py" in temp_options:
-    temp_options.remove("custom_library.py")
+#if "custom_library.py" in temp_options:
+#    temp_options.remove("custom_library.py")
 if "feature_library.py" in temp_options:
     temp_options.remove("feature_library.py")
 ext = ".py"
@@ -861,7 +872,7 @@ feat_var.set("polynomial_library") # Set the default value for the differentiati
 temp_options.clear()
 
 # Create, configure and display the feature library option dropdown on the GUI
-feat_menu = tk.OptionMenu(window,feat_var,*feat_options)
+feat_menu = tk.OptionMenu(window,feat_var,*feat_options, command=get_feat)
 feat_menu.config(width=drop_w,font=("Times",15),bg=bgc)
 feat_menu.grid(row=6,column=1,columnspan=3,sticky="nsew")
 
@@ -874,6 +885,10 @@ get_opt("<command>")
 # Frame for differentitation option variable selection (advanced options)
 diff_fram = tk.Frame(window,bd=2,bg=bgc,width=5)
 get_diff("<command>")
+
+# Frame for custom feature library variable selection (adv options)
+feat_fram = tk.Frame(window, bd=2, bg=bgc, width=5)
+get_feat("<command>")
 
 # Resize the main GUI window
 size = str(min_w) + "x" + str(min_h)
