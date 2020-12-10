@@ -365,17 +365,18 @@ def d_inst(widget_list):
     diff = eval("ps.SINDyDerivative(kind = \""+diff_var.get()+"\","+instance+")")
     return diff
 
-
 # Instantiate the optimizer
 def o_inst(widget_list):
     class_name = get_opt_class()
+
+    # Inst Lasso
     if (class_name == "Lasso"):
         instance = "Lasso("  
     else:
         instance = "ps."+class_name+"(" # Text string to instantiate after looping through populating with parameter values
 
+    # Inst any other Optimisers
     count = 0
-
     for widget in widget_list: # Form executable line in a string
         value = None # Input value from GUI
         try: # For option menu widgets
@@ -861,8 +862,6 @@ if "__pycache__" in temp_options:
     temp_options.remove("__pycache__")
 if "__init__.py" in temp_options:
     temp_options.remove("__init__.py")
-#if "custom_library.py" in temp_options:
-#    temp_options.remove("custom_library.py")
 if "feature_library.py" in temp_options:
     temp_options.remove("feature_library.py")
 ext = ".py"
