@@ -310,29 +310,48 @@ def disp_feat_select(feat_params, feat_param_def):
 # Instantiate the feature library
 def feat_inst(widget_list):
     class_name = get_feat_class() # Get the class name of the selected feature library
-
     instance = ""
     count = 0
-    for widget in widget_list: # Form executable line in a string
-        value = None # Input value from GUI
-        try: # For option menu widgets
-            value = widget[3].get()
-        except Exception: # For entry widgets
-            value = widget[2].get()
 
-        if(str(widget[-2]) == "<class 'str'>" and not value.startswith("[")): 
-            value = "\"" + value + "\""
+    if class_name != "CustomLibrary":
+        for widget in widget_list: # Form executable line in a string
+            value = None # Input value from GUI
+            try: # For option menu widgets
+                value = widget[3].get()
+            except Exception: # For entry widgets
+                value = widget[2].get()
 
-        var_name = widget[0].cget("text") # Name of the inbuilt parameter, stored in the label widgets on the GUI
+            if(str(widget[-2]) == "<class 'str'>" and not value.startswith("[")): 
+                value = "\"" + value + "\""
 
-        if(not value == "\"\""): # Entry widgets for parameters with no inbuilt value store the value as ""
-            instance = instance + var_name + "=" + value
-            if(count+1<len(widget_list)):
-                instance = instance + ","
+            var_name = widget[0].cget("text") # Name of the inbuilt parameter, stored in the label widgets on the GUI
+
+            if(not value == "\"\""): # Entry widgets for parameters with no inbuilt value store the value as ""
+                instance = instance + var_name + "=" + value
+                if(count+1<len(widget_list)):
+                    instance = instance + ","
+            
+            count += 1
+
+        feat = "ps."+class_name+"("+instance+")" # Instantiate the selected feature library
         
-        count += 1
+    else:
+        for widget in widget_list:
+            value = None # Input value from GUI
+            try: # For option menu widgets
+                value = widget[3].get()
+            except Exception: # For entry widgets
+                value = widget[2].get()
 
-    feat = "ps."+class_name+"("+instance+")" # Instantiate the selected feature library
+            if(str(widget[-2]) == "<class 'str'>" and not value.startswith("[")): 
+                value = "\"" + value + "\""
+
+            var_name = widget[0].cget("text") # Name of the inbuilt parameter, stored in the label widgets on the GUI
+
+            if(var_name == "library_functions"):
+                lib = [lambda x : x, lambda y : y, lambda z : z] # not sure how to do this lambda stuff
+        feat = "ps.CustomLibrary(library_functions = " + lib + ", function_names =" + func + ", interaction_only = " + interact + ")"
+
     print(feat)
     inst = eval(feat) 
     return inst # Returns the instance
@@ -661,6 +680,7 @@ def comp():
     # Create PySINDy Model
     model = ps.SINDy(optimizer=opt, differentiation_method=diff, feature_library=feat, feature_names=variable_names) # Instantiate the model with the previously obtained instances and variable names
     model.fit(contents, t=dt) # Fit the input data to the model
+    
     coefs = model.coefficients() # Obtain the coefficient matrix from the obtained model
     feats = model.get_feature_names() # Get the feature names from the obtained model
     score = model.score(contents, t=time_series) # Obtain the model score for the system
@@ -860,6 +880,8 @@ temp_options = non_hidden(pysindypath+"/feature_library") # Get a list of the fe
     # Remove the files that aren't feature library options
 if "__pycache__" in temp_options:
     temp_options.remove("__pycache__")
+if "base.py" in temp_options:
+    temp_options.remove("base.py")
 if "__init__.py" in temp_options:
     temp_options.remove("__init__.py")
 if "feature_library.py" in temp_options:
