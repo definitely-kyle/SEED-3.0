@@ -722,8 +722,6 @@ def comp():
         score = model.score(contents, t=time_series)
         sim_data = model.simulate(conds, time_series)
 
-    print(np.shape(contents))
-    print(np.shape(sim_data))
     plot_window = show_plots(contents, sim_data, coefs, feats, time_series, variable_names, window_name) # Show the output plots
 
     table_size = len(contents[0]) # Obtain the number of system variables, used to define the number of columns in the output table
@@ -752,9 +750,9 @@ def init_buttons():
     adv_button = tk.Button(button_fram,text="Show Advanced",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=advanced)
     adv_button.grid(row=0,column=2,columnspan=2,sticky="EW")
 
-    # Use SINDYc button
+    # Enable SINDYc button
     global sindyc_button
-    sindyc_button = tk.Button(button_fram,text="Use SINDYc",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=sindy_with_control)
+    sindyc_button = tk.Button(button_fram,text="Enable SINDYc",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=sindy_with_control)
     sindyc_button.grid(row=1,column=0,columnspan=2,sticky="EW")
 
     # Reset advanced options button
