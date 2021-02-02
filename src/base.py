@@ -189,3 +189,20 @@ def update_number(event, dt_entry, time_entry1, time_entry2, points_label):
         points_label.configure(text = "Number of Points: ")
     except Exception as e: # Any other exception. This shouldn't happen
         print("Error!\n" + str(e))
+
+def clean_contents_control(contents):
+    # Separate the input file into data points, time series and variable names
+    numcols = len(contents[0])
+    if ((contents[0][numcols-1]) == "u"):
+        variable_names = contents[0][1:] # Obtain the system variable names from the data
+        del contents[0] # Remove the system variable names from the data matrix
+        u = np.array([row[-1] for row in contents]) # Forcing function data
+        contents = [row[:-1] for row in contents] # Remove forcing function data from contents
+        time_series = np.array([float(val[0]) for val in contents]) # From the first column of the data file, obtain the time series data for the data
+        dt = float(time_series[1])-float(time_series[0]) # From the time series data, obtain dt
+
+        contents = [val[1:] for val in contents] # Remove the time series data from the data matrix
+        contents = np.array([[float(val) for val in item] for item in contents]) # Turn the list of lists into a numpy array as this is what the PySINDy model expects as an input
+        return time_series, dt, contents, u, variable_names
+    else:
+        raise Exception('Invalid format: contents must be in order of t, [data], u')
