@@ -46,6 +46,7 @@ pysindypath = os.path.dirname(ps.__file__) # Find file path for pysindy module w
 hidden = False # Is the own data file browser button shown
 to_open = " " # Variable storing the filepath for the own data file
 adv = False # Is the advanced options panel shown
+sindyc = False # Is SINDYc active/disable
 opt_widgets = [] # Storing information for the advanced optimization option widgets, structure of each item in list (the difference in structure for different types is important!): 
                         #if the variable is a boolean : [label widget with name of variable,option menu with True/False,type of variable (bool in this case),the input value of the widget on the GUI]
                         #for other variables : [label widget with name of variable,type of variable (e.g int or string),entry box widget with input value from GUI]
@@ -113,6 +114,18 @@ def advanced():
         adv = True
     
     window.geometry(size) # Set GUI window's size
+
+# Toggle SINDYc 
+def sindy_with_control():
+    global sindyc
+
+    if(sindyc):
+        sindyc_button["text"] = "Use SINDYc" # Set the button text
+        sindyc = False
+    elif(not sindyc):
+        sindyc_button["text"] = "Disable SINDYc" # Set the button text
+        sindyc = True
+
 
 # Get optimizer selection class name
 def get_opt_class():
@@ -332,9 +345,7 @@ def feat_inst(widget_list):
                     instance = instance + ","
             
             count += 1
-
         feat = "ps."+class_name+"("+instance+")" # Instantiate the selected feature library
-        
     else:
         for widget in widget_list:
             value = None # Input value from GUI
@@ -350,6 +361,8 @@ def feat_inst(widget_list):
 
             if(var_name == "library_functions"):
                 lib = [lambda x : x, lambda y : y, lambda z : z] # not sure how to do this lambda stuff
+                func = [x,y,z]
+                interact =  False
         feat = "ps.CustomLibrary(library_functions = " + lib + ", function_names =" + func + ", interaction_only = " + interact + ")"
 
     print(feat)
@@ -669,9 +682,17 @@ def comp():
             return None
 
         variable_names = ["x","y","z"] # Default system variable names if "Generate Lorenz System" is selected
-    elif(window_name.endswith(".csv") or ((window_name == "Own Data") and to_open.endswith(".csv"))):
+    elif((window_name.endswith(".csv") or ((window_name == "Own Data") and to_open.endswith(".csv"))) and (not sindyc)):
         contents = read_file(sel_var.get(), to_open) # Obtain the data in the selected .csv file. This is a list of lists
         time_series, dt, contents, variable_names = clean_contents(contents) # Split time series, time step, data and variable names into separate lists 
+    elif((window_name.endswith(".csv") or ((window_name == "Own Data") and to_open.endswith(".csv"))) and (sindyc)):
+        contents = read_file(sel_var.get(), to_open) # Obtain the data in the selected .csv file. This is a list of lists
+        try:
+            time_series, dt, contents, u, variable_names = clean_contents_control(contents) # Split time series, time step, data, forcing input and variable names into separate lists
+        except Exception:
+            messagebox.showerror(title="Invalid Condition", message="The selected file must be in the columns: time data, space data, forcing function. \n\nExiting the computation.")
+            return None
+
     else: # If the selected file isn't a .csv file, stop the computation
         messagebox.showerror(title="Invalid File Type", message="The selected file needs to be a .csv file in the correct format. Read to tutorial for more information.\n\nExiting the computation.")
         return None
@@ -679,14 +700,30 @@ def comp():
 
     # Create PySINDy Model
     model = ps.SINDy(optimizer=opt, differentiation_method=diff, feature_library=feat, feature_names=variable_names) # Instantiate the model with the previously obtained instances and variable names
-    model.fit(contents, t=dt) # Fit the input data to the model
+
+    print(sindyc)
+
+    if(sindyc):
+        model.fit(contents, u=u, t=dt) # Fit the input data to the model
+    elif(not sindyc):
+        model.fit(contents, t=dt)
     
     coefs = model.coefficients() # Obtain the coefficient matrix from the obtained model
     feats = model.get_feature_names() # Get the feature names from the obtained model
-    score = model.score(contents, t=time_series) # Obtain the model score for the system
-
     conds = np.array([float(val) for val in contents[0]]) # Convert the system's initial conditions into a numpy array of float values as this is what is expected by the model.simulate() function
-    sim_data = model.simulate(conds,time_series) # Create the forward simulated data. This uses the original initial conditions evolved with the model output equations to obtain new data
+    
+    if(sindyc):
+        score = model.score(contents, u=u, t=time_series) # Obtain the model score for the system
+        sim_data = model.simulate(conds, u=u, t=time_series) # Create the forward simulated data. This uses the original initial conditions evolved with the model output equations to obtain new data
+        # Drop last points to match sim_data
+        contents = contents[:-1]
+        time_series = time_series[:-1]
+    elif(not sindyc):
+        score = model.score(contents, t=time_series)
+        sim_data = model.simulate(conds, time_series)
+
+    print(np.shape(contents))
+    print(np.shape(sim_data))
     plot_window = show_plots(contents, sim_data, coefs, feats, time_series, variable_names, window_name) # Show the output plots
 
     table_size = len(contents[0]) # Obtain the number of system variables, used to define the number of columns in the output table
@@ -715,17 +752,18 @@ def init_buttons():
     adv_button = tk.Button(button_fram,text="Show Advanced",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=advanced)
     adv_button.grid(row=0,column=2,columnspan=2,sticky="EW")
 
-    # Blank line in the frame
-    blank_line1 = tk.Label(button_fram,text=" ",font=("Times",15),width=round(line_w/2),highlightbackground=bgc,bg=bgc)
-    blank_line1.grid(row=1,column=0,columnspan=2)
+    # Use SINDYc button
+    global sindyc_button
+    sindyc_button = tk.Button(button_fram,text="Use SINDYc",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=sindy_with_control)
+    sindyc_button.grid(row=1,column=0,columnspan=2,sticky="EW")
 
     # Reset advanced options button
     reset_button = tk.Button(button_fram,text="Reset to Defaults",font=("Times",15,"bold"),width=15,highlightbackground=bgc,command=reset)
     reset_button.grid(row=1,column=2,columnspan=2,sticky="EW")
 
     # Blank line in the frame
-    blank_line2 = tk.Label(button_fram,text=" ",font=("Times",15),width=line_w,highlightbackground=bgc,bg=bgc)
-    blank_line2.grid(row=2,column=0,columnspan=4)
+    blank_line1 = tk.Label(button_fram,text=" ",font=("Times",15),width=line_w,highlightbackground=bgc,bg=bgc)
+    blank_line1.grid(row=2,column=0,columnspan=4)
 
     # Compute button
     comp_button = tk.Button(button_fram,text="Compute",font=("Times",15,"bold"),width=10,highlightbackground=bgc,command=comp)
