@@ -4,11 +4,13 @@
 
 **DONE**
 * Lasso Optimisation
+* Derivative Package Support
 
 **IN PROGRESS**
 * Custom Feature Library
 * Unit Testing
 * General Tidying and Moving to Base Library and Main
+* SINDYc Implementation
 
 **POSSIBLE FUTURE DEVELOPMENT**
 * Analysing Noise Rejection and Model Scoring
@@ -31,7 +33,7 @@ SEED has a simple and intuitive Graphical User Interface (GUI) so that researche
 ## Getting Started
 
 ### Installing
-Currently, SEED has only been tested on Windows. Although it may be able to run on other operating systems, results may vary. For previous iterations which have been tested on Mac, please refer to SEED 2.0, created by Michael Vause.
+Currently, SEED has only been tested on Windows. Although it may be able to run on other operating systems, results may vary. For previous iterations which have been tested on Mac, please refer to [SEED 2.0] (https://github.com/Statistical-Learning-4-System-Id/SEED2.0), created by Michael Vause.
 
 First, download the files from the SEED GitHub page. Press the green _Code_ button on the top left and download zip. When downloaded, unzip the downloaded files. After downloading these source files, save them in the same folder anywhere you would like.
 
