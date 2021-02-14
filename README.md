@@ -20,7 +20,7 @@
 * [Getting Started](#getting-started)
 	* [Installing](#installing)
 * [Usage](#usage)
-	* [Running SEED 3](#running-SEED 3)
+	* [Running SEED 3](#running-SEED-3)
 	* [Examples](#examples)
 	* [Using your own data](#using-your-own-data)
 * [Model Output](#model-output)
