@@ -6,7 +6,7 @@ import numpy as np
 sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")
 
 try:
-    from base import switch, clean_contents, read_file
+    from base import switch, clean_contents, read_file, clean_contents_control
 except ImportError as mod: # If the user didn't install the required modules beore trying to run SEED 2.0
     print("Install the required modules before starting:\n" + str(mod))
 except Exception as err: # Any other exception that should occur (nothing else should happen, hence generalising all other exceptions)
@@ -24,7 +24,7 @@ class TestSwitch(object):
 
 class TestReadData(object):
     def test_default_lorenz(self):
-        ts, dt, cont, vars = clean_contents(read_file("data_Lorenz3d.csv", ""))
+        ts, dt, cont, var = clean_contents(read_file("data_Lorenz3d.csv", ""))
         ts = ts[0:4]
         cont = cont[0:4]
 
@@ -40,10 +40,10 @@ class TestReadData(object):
         assert np.all(ts == expected_ts)
         assert np.all(dt == expected_dt)
         assert np.all(cont == expected_cont)
-        assert np.all(vars == expected_vars)
+        assert np.all(var == expected_vars)
 
     def test_random_5d(self):
-        ts, dt, cont, vars = clean_contents(read_file("random_5d.csv", ""))
+        ts, dt, cont, var = clean_contents(read_file("random_5d.csv", ""))
         ts = ts[0:4]
         cont = cont[0:4]
 
@@ -59,4 +59,27 @@ class TestReadData(object):
         assert np.all(ts == expected_ts)
         assert np.all(dt == expected_dt)
         assert np.all(cont == expected_cont)
-        assert np.all(vars == expected_vars)
+        assert np.all(var == expected_vars)
+
+    def test_clean_contents_control(self):
+        ts, dt, cont, u, var = clean_contents_control(read_file("predatorpreydata.csv", ""))
+        ts = ts[0:4]
+        cont = cont[0:4]
+        u = u[0:4]
+
+        expected_ts = [0.1, 0.2, 0.3, 0.4]
+        expected_dt = 0.1
+        expected_cont = [   
+            [1.0,1.0],
+            [0.93815867,1.0],
+            [0.894741036,0.993815867],
+            [0.878213584,0.983355064]
+        ]
+        expected_u = np.array(['0.2196665', '0.437335995', '0.651031414', '0.858815353'])
+        expected_vars = ["x", "y", "u"]
+
+        assert np.all(ts == expected_ts)
+        assert np.all(dt == expected_dt)
+        assert np.all(cont == expected_cont)
+        assert np.all(u == expected_u)
+        assert np.all(var == expected_vars)
