@@ -701,8 +701,6 @@ def comp():
     # Create PySINDy Model
     model = ps.SINDy(optimizer=opt, differentiation_method=diff, feature_library=feat, feature_names=variable_names) # Instantiate the model with the previously obtained instances and variable names
 
-    print(sindyc)
-
     if(sindyc):
         model.fit(contents, u=u, t=dt) # Fit the input data to the model
     elif(not sindyc):
@@ -715,6 +713,7 @@ def comp():
     if(sindyc):
         score = model.score(contents, u=u, t=time_series) # Obtain the model score for the system
         sim_data = model.simulate(conds, u=u, t=time_series) # Create the forward simulated data. This uses the original initial conditions evolved with the model output equations to obtain new data
+        
         # Drop last points to match sim_data
         contents = contents[:-1]
         time_series = time_series[:-1]
