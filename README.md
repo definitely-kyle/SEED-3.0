@@ -2,19 +2,6 @@
 
 **SEED**: **S**oftware for the **E**xtraction of **E**quations from **D**ata
 
-**DONE**
-* Lasso Optimisation
-* Derivative Package Support
-
-**IN PROGRESS**
-* Custom Feature Library
-* Unit Testing
-* General Tidying and Moving to Base Library and Main
-* SINDYc Implementation
-
-**POSSIBLE FUTURE DEVELOPMENT**
-* Analysing Noise Rejection and Model Scoring
-
 ## Table of contents
 * [Introduction](#introduction)
 * [Getting Started](#getting-started)
@@ -57,11 +44,11 @@ The GUI will start up and will look like this:
 
 * Windows:
 
-![GUI win](src/images/GUI_win.png)
+<img src="src/images/GUI_win.png" alt="GUI Windows" width="500"/>
 
 * Mac (old):
 
-![GUI mac](src/images/GUI_mac.png)
+<img src="src/images/GUI_mac.png" alt="GUI MacOS" width="500"/>
 
 After launching, you can then select your data file and press the _Compute_ button to obtain your output equations.
 
@@ -80,7 +67,7 @@ The ability to generate your own dataset is also built into the program. Just se
 In order to use your own data with SEED 3, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
 An example of a three variable system is shown below:
 
-![own data](src/images/Own_Data.png)
+<img src="src/images/Own_Data.png" alt="Own Data Table" width="500"/>
 
 There are two ways to run the program with your own data files.
 
@@ -100,3 +87,18 @@ The second output window displays two sets of plots. The first set shows the coe
 Pressing the save button on this window saves both a _.png_ of the output plots and a _.csv_ of the output coefficient matrix to the filepath selected.
 
 Both example output windows are the MacOS versions.
+
+## Current and Future Development
+
+**DONE**
+* Lasso Optimisation
+* Derivative Package Support
+
+**IN PROGRESS**
+* Custom Feature Library
+* Unit Testing
+* General Tidying and Moving to Base Library and Main
+* SINDYc Implementation
+
+**POSSIBLE DEVELOPMENT**
+* Analysing Noise Rejection and Model Scoring
