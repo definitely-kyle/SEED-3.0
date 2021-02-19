@@ -360,10 +360,8 @@ def feat_inst(widget_list):
             var_name = widget[0].cget("text") # Name of the inbuilt parameter, stored in the label widgets on the GUI
 
             if(var_name == "library_functions"):
-                lib = [lambda x : x, lambda y : y, lambda z : z] # not sure how to do this lambda stuff
-                func = [x,y,z]
                 interact =  False
-        feat = "ps.CustomLibrary(library_functions = " + lib + ", function_names =" + func + ", interaction_only = " + interact + ")"
+        # feat = "ps.CustomLibrary(library_functions = " + lib + ", function_names =" + func + ", interaction_only = " + interact + ")"
 
     print(feat)
     inst = eval(feat) 
@@ -921,6 +919,8 @@ if "__init__.py" in temp_options:
     temp_options.remove("__init__.py")
 if "feature_library.py" in temp_options:
     temp_options.remove("feature_library.py")
+if "custom_library.py" in temp_options: # Remove this once custom libraries are properly implemented
+    temp_options.remove("custom_library.py")
 ext = ".py"
 feat_options = [eg.split(ext, 1)[0] for eg in temp_options] # Remove the extension from all of the remaining options
 feat_options.sort()
