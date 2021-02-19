@@ -1,4 +1,4 @@
-# SEED 3
+# SEED
 
 **SEED**: **S**oftware for the **E**xtraction of **E**quations from **D**ata
 
@@ -8,25 +8,28 @@
 	* [Installing](#installing)
 * [Usage](#usage)
 	* [Running SEED 3](#running-SEED-3)
-	* [Examples](#examples)
 	* [Using your own data](#using-your-own-data)
 * [Model Output](#model-output)
+	* [Examples](#examples)
+		* [3D Lorenz System](#3d-lorenz-system)
+		* [5D Random System](#5d-random-system)
+		* [Predator Prey Model](#predator-prey-model)
 
 ## Introduction
-SEED 3 is a package written in Python that allows for the extraction of governing differential equations from data. It has been written with use of the [PySINDy](https://github.com/dynamicslab/pysindy) package, written by Brian de Silva et al.
+SEED is a package written in Python that allows for the extraction of governing differential equations from data. It has been written with use of the [PySINDy](https://github.com/dynamicslab/pysindy) package, written by Brian de Silva et al.
 
-SEED 3 has a simple and intuitive Graphical User Interface (GUI) so that researchers in a wide variety of fields, without needing to know any programming, can analyse their data using these cutting edge methods.
+SEED has a simple and intuitive Graphical User Interface (GUI) so that researchers in a wide variety of fields, without needing to know any programming, can analyse their data using these cutting edge methods.
 
 ## Getting Started
 
 ### Installing
-Currently, SEED 3 has only been tested on Windows. Although it may be able to run on other operating systems, results may vary. For previous iterations which have been tested on Mac, please refer to [SEED 2.0](https://github.com/Statistical-Learning-4-System-Id/SEED2.0), created by Michael Vause.
+Currently, SEED has only been tested on Windows. Although it may be able to run on other operating systems, results may vary. For previous iterations which have been tested on Mac, please refer to [SEED 2.0](https://github.com/Statistical-Learning-4-System-Id/SEED2.0), created by Michael Vause.
 
-First, download the files from the SEED GitHub page. Press the green _Code_ button on the top left and download zip. When downloaded, unzip the downloaded files. After downloading these source files, save them in the same folder anywhere you would like.
+In order to install SEED, simply download the files and extract the contents of the zipped download to a desired folder. 
 
 * Python:
 
-In order to run SEED 3, the user must have a current Python installation, that can be downloaded from the [Python website](https://www.python.org/downloads/). If running SEED 3 on a Windows system, ensure to select the add python to path option during installation.
+In order to run SEED, the user must have a current Python installation, that can be downloaded from the [Python website](https://www.python.org/downloads/). If running SEED 3 on a Windows system, ensure to select the add python to path option during installation.
 
 As well as the base Python installation, it is vital to install the Python modules needed for the programme to run. You can do this by running these commands in the terminal or command line:
 
@@ -38,7 +41,7 @@ As well as the base Python installation, it is vital to install the Python modul
 
 ### Running SEED 3
 
-To run SEED 3 from its files, open the Python IDE (included with the Python download) and open the file _SEED2\_0.py_. Click _Run > Run Module_ on the toolbar to run the software.
+To run SEED 3, open a Python IDE (there is one included with the Python download) and open the SEED_3.py file. Run the file from the IDE toolbar.
 
 The GUI will start up and will look like this:
 
@@ -50,18 +53,11 @@ The GUI will start up and will look like this:
 
 <img src="src/images/GUI_mac.png" alt="GUI MacOS" width="500"/>
 
-After launching, you can then select your data file and press the _Compute_ button to obtain your output equations.
+From here, the data to be analysed can be selected from the “Example/Own Data” dropdown. Differentiation, optimisation, and feature library options can be edited by using the “Show Advanced” button, which shows the full GUI:
+
+<img src="src/images/GUI_win_adv.png" alt="Advanced GUI Windows" width="1000"/>
 
 Check the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository for details on the optimization, differentiation and feature library options.
-
-### Examples
-There are two datasets that come with the download.
-
-The first, called _data\_Lorenz3d.csv_, contains the data for a three dimensional lorenz system, generated from the [feature overview](https://github.com/dynamicslab/pysindy/blob/master/examples/1_feature_overview.ipynb) example file from the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository. 
-
-The second, called _random\_5d.csv_, contains five variables of randomly generated data. This is to show an example of the output of SEED 3 when a system with no underlying relationship is tested. It is clear that the SINDy algorithm can't settle on sparse coefficients to represent the model.
-
-The ability to generate your own dataset is also built into the program. Just select the _Generate Lorenz Data_ option in the _Example/ Own Data_ dropdown menu. After pressing compute, a window will pop up containing the inital Lorenz conditions of the _data\_Lorenz3d.csv_ data. You can then edit the conditions to generate your own system. After pressing _Continue_, SEED 3 will generate the system, and compute its output.
 
 ### Using your own data
 In order to use your own data with SEED 3, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
@@ -76,17 +72,69 @@ The first is to select _Own Data_ in the _Example/Own Data_ dropdown selection b
 You can also save the data file in the data folder containing the example data files that came with the SEED 3 download, then select it in the dropdown after running SEED 3.
 
 ## Model Output
-After pressing compute, SEED 3 uses the selections on the main GUI window to make a PySINDy model using the selected data. The first output window displays the output sparse coefficients in a table, and automatically forms the output equations. It also calculates and displays the model score, an inbuilt feature to PySINDy. An example of this window, on MacOS, can be seen below:
 
-![output window 1](src/images/window1.png)
+After pressing the _Compute_ button, SEED uses the selected _Differentiation_, _Optimization_ and _Feature Library_ Options to create a PySINDy model with the selected data. Two output windows will be shown. 
 
-The second output window displays two sets of plots. The first set shows the coefficients for each output equation in bar plots to easily visualise which terms in each equation are more important. The second set of plots shows the selected input data plotted against simulated data, created using the input data's initial conditions, evolved using the model's output equations. This can be seen below:
+The first window shows the output sparse coefficents in a table and the output equations of the system, as well as the overall model score:
 
-![output window 2](src/images/window2.png)
+<img src="src/images/lorenz_window_1.png" alt="Lorenz System Output Data" width="700"/>
 
-Pressing the save button on this window saves both a _.png_ of the output plots and a _.csv_ of the output coefficient matrix to the filepath selected.
+The second window shows two sets of plots comparing the coefficients in a bar graph and modelling the predicted model versus the input data:
 
-Both example output windows are the MacOS versions.
+<img src="src/images/lorenz_window_2.png" alt="Lorenz System Output Plots" width="700"/>
+
+These windows show the output of the Lorenz System example described below:
+
+### Examples
+There are three datasets which come as a part of the download:
+
+* 3D Lorenz System
+* 5D Random Data
+* Predator-Prey Model (with and without forcing)
+
+#### 3D Lorenz System
+
+This first example (data_Lorenz3d.csv) contains the data for a three-dimensional Lorenz System, generated from the [feature overview](https://github.com/dynamicslab/pysindy/blob/master/examples/1_feature_overview.ipynb) example file from the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository. 
+
+In short, the data is generated by simulating the following governing equations:
+
+> d**x** / dt = σ(**y** - **x**),
+> 
+> d**y** / dt = **x**(ρ - **z**) - **y**,
+> 
+> d**z** / dt = **xy** - β**z**,
+
+where σ, ρ and β are constants with their typical values of 10, 8/3, and 28 respectively. The system's initial conditions are:
+
+> **x**(0) = 1,
+>
+> **y**(0) = 1,
+>
+> **z**(0) = 1.
+
+The ability to generate your own dataset is also built into the program. Just select the _Generate Lorenz Data_ option in the _Example/ Own Data_ dropdown menu. After pressing compute, a window will pop up containing the inital Lorenz conditions of the _data\_Lorenz3d.csv_ data. You can then edit the conditions to generate your own system. After pressing _Continue_, SEED 3 will generate the system, and compute its output.
+
+#### 5D Random System
+This dataset (random_5d.csv) aims to show an output where there are no governing equations generating the data, and PySINDy will not be able to find sensible coefficient values in this case. 
+
+#### Predator Prey Model
+The two data sets (predpreyunforced.csv and predatorpreydata.csv) demonstrate the SINDy with Control (SINDYc) method. The unforced data is generated using the governing equations:
+
+> d**x** / dt = a**x** - c**xy**,
+>
+> d**y** / dt = -b**y** + d**xy**,
+
+where **x** is the number of prey in the system, **y** is the number of predators in the system, and (a,b,c,d) are constants linked to the natural reproduction and decline of the species and the effect on both populations due to predation, respectively. The system has been simulated with some default values for 600 time steps of 0.1 to generate the dataset.
+
+To demonstrate the usage of SINDy with Control (SINDYc), the same system has then been simulated with the addition of a forcing function **u**:
+
+> **u**(t) = 2 sin(t) + 2 sin(0.1t),
+
+which is input with the rate of change of prey as:
+
+> d**x** / dt = a**x** - c**xy** + **u**^2.
+
+By toggling the _Enable SINDYc_ button, SEED will attempt to identify how the system is forced from the data. It is important to note that input data with SINDYc must be of the format (in column order, from left to right) - time_series, state space data (e.g. x,y,z), forcing function.
 
 ## Current and Future Development
 
