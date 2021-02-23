@@ -30,10 +30,16 @@ researchers in a wide variety fields without any need for prior programming know
 
 # Statement of Need
 
+Research in system identification in the Modern Era is primarily led by data-driven methods, such as Dynamic Mode 
+Decomposition (DMD), Sparse Identification of Non-linear Dynamics (SINDy), Koopman Operator, etc., and their 
+implementations. SINDy has been implemented as the python package PySINDy and, while effective, requires considerable 
+knowledge in Python programming to utilise the tools to their full extent. `SEED` remedies this barrier by providing
+a Graphical User Interface (GUI) with access to all facets of PySINDy while remaining approachable and easy to use.
 
-
-# Acknowledgements
-
-
+`SEED` provides a modular approach for interfacing with PySINDy. One may choose from a selection of differentiation 
+methods, optimiser methods and custom libraries and can change any options within these categories, with typical default values
+provided. `SEED` then creates the SINDy model and provides the output equations and model comparisons, which can then be 
+saved for use. SINDy with Control (SINDYc) functionality is also provided to allow the user to identify dynamical systems
+with forcing inputs and control.
 
 # References
