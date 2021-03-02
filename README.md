@@ -7,7 +7,7 @@
 * [Getting Started](#getting-started)
 	* [Installing](#installing)
 * [Usage](#usage)
-	* [Running SEED 3](#running-SEED-3)
+	* [Running SEED](#running-SEED)
 	* [Using your own data](#using-your-own-data)
 * [Model Output](#model-output)
 	* [Examples](#examples)
@@ -23,13 +23,13 @@ SEED has a simple and intuitive Graphical User Interface (GUI) so that researche
 ## Getting Started
 
 ### Installing
-Currently, SEED has only been tested on Windows. Although it may be able to run on other operating systems, results may vary. For previous iterations which have been tested on Mac, please refer to [SEED 2.0](https://github.com/Statistical-Learning-4-System-Id/SEED2.0), created by Michael Vause.
+Currently, SEED has been tested on Mac and Windows. Although it may be able to run on other operating systems, results may vary. For previous iterations, please refer to [SEED 2.0](https://github.com/Statistical-Learning-4-System-Id/SEED2.0), created by Michael Vause.
 
 In order to install SEED, simply download the files and extract the contents of the zipped download to a desired folder. 
 
 * Python:
 
-In order to run SEED, the user must have a current Python installation, that can be downloaded from the [Python website](https://www.python.org/downloads/). If running SEED 3 on a Windows system, ensure to select the add python to path option during installation.
+In order to run SEED, the user must have a current Python installation, that can be downloaded from the [Python website](https://www.python.org/downloads/). If running SEED on a Windows system, ensure to select the add python to path option during installation.
 
 As well as the base Python installation, it is vital to install the Python modules needed for the programme to run. You can do this by running these commands in the terminal or command line:
 
@@ -37,11 +37,15 @@ As well as the base Python installation, it is vital to install the Python modul
 
 > _python -m pip install matplotlib pysindy pandas_
 
+* Mac - terminal
+
+> _python3 -m pip install matplotlib pysindy pandas_
+
 ## Usage
 
-### Running SEED 3
+### Running SEED
 
-To run SEED 3, open a Python IDE (there is one included with the Python download) and open the SEED_3.py file. Run the file from the IDE toolbar.
+To run SEED, open a Python IDE (there is one included with the Python download) and open the SEED.py file. Run the file from the IDE toolbar.
 
 The GUI will start up and will look like this:
 
@@ -60,7 +64,7 @@ From here, the data to be analysed can be selected from the “Example/Own Data�
 Check the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository for details on the optimization, differentiation and feature library options.
 
 ### Using your own data
-In order to use your own data with SEED 3, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
+In order to use your own data with SEED, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
 An example of a three variable system is shown below:
 
 <img src="src/images/Own_Data.png" alt="Own Data Table" width="500"/>
@@ -69,7 +73,7 @@ There are two ways to run the program with your own data files.
 
 The first is to select _Own Data_ in the _Example/Own Data_ dropdown selection box on the main panel of the GUI, then using the file browser, you can then select the file containing your data.
 
-You can also save the data file in the data folder containing the example data files that came with the SEED 3 download, then select it in the dropdown after running SEED 3.
+You can also save the data file in the data folder containing the example data files that came with the SEED download, then select it in the dropdown after running SEED.
 
 ## Model Output
 
@@ -112,7 +116,7 @@ where σ, ρ and β are constants with their typical values of 10, 8/3, and 28 r
 >
 > **z**(0) = 1.
 
-The ability to generate your own dataset is also built into the program. Just select the _Generate Lorenz Data_ option in the _Example/ Own Data_ dropdown menu. After pressing compute, a window will pop up containing the inital Lorenz conditions of the _data\_Lorenz3d.csv_ data. You can then edit the conditions to generate your own system. After pressing _Continue_, SEED 3 will generate the system, and compute its output.
+The ability to generate your own dataset is also built into the program. Just select the _Generate Lorenz Data_ option in the _Example/ Own Data_ dropdown menu. After pressing compute, a window will pop up containing the inital Lorenz conditions of the _data\_Lorenz3d.csv_ data. You can then edit the conditions to generate your own system. After pressing _Continue_, SEED will generate the system, and compute its output.
 
 #### 5D Random System
 This dataset (random_5d.csv) aims to show an output where there are no governing equations generating the data, and PySINDy will not be able to find sensible coefficient values in this case. 
