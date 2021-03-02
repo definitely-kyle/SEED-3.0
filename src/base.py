@@ -13,6 +13,7 @@ try:
     from tkinter import messagebox
     from tkinter import filedialog as fd
     from math import ceil
+    import os
 except ImportError as mod: # If the user didn't install the required modules beore trying to run SEED 2.0
     print("Install the required modules before starting:\n" + str(mod))
     messagebox.showerror(title="Module Import Error", message="Install the required modules before starting:\n" + str(mod))
@@ -57,7 +58,7 @@ def read_file(selection, to_open):
     if(selection == "Own Data"):
         to_read = to_open      
     else:
-        to_read = "./src/data/" + selection
+        to_read = str(os.path.join(os.path.dirname(os.path.abspath(__file__)),"data/")) + selection
 
     with open(to_read, newline='') as csvfile:
         data = list(csv.reader(csvfile))  

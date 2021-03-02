@@ -46,7 +46,7 @@ pysindypath = os.path.dirname(ps.__file__) # Find file path for pysindy module w
 hidden = False # Is the own data file browser button shown
 to_open = " " # Variable storing the filepath for the own data file
 adv = False # Is the advanced options panel shown
-sindyc = False # Is SINDYc active/disable
+sindyc = False # Is SINDYc enabled/disabled
 opt_widgets = [] # Storing information for the advanced optimization option widgets, structure of each item in list (the difference in structure for different types is important!): 
                         #if the variable is a boolean : [label widget with name of variable,option menu with True/False,type of variable (bool in this case),the input value of the widget on the GUI]
                         #for other variables : [label widget with name of variable,type of variable (e.g int or string),entry box widget with input value from GUI]
@@ -120,7 +120,7 @@ def sindy_with_control():
     global sindyc
 
     if(sindyc):
-        sindyc_button["text"] = "Use SINDYc" # Set the button text
+        sindyc_button["text"] = "Enable SINDYc" # Set the button text
         sindyc = False
     elif(not sindyc):
         sindyc_button["text"] = "Disable SINDYc" # Set the button text
@@ -786,7 +786,7 @@ if platform == "darwin": # MacOS
     col_width = 160 # Width of the columns in the output table
     fig_w = 1115 # Width of the output figure
     fig_h = 645 # height of the output figure
-    adv_size = "1050x610" # Size of the window when the advanced options are shown
+    adv_size = "1050x850" # Size of the window when the advanced options are shown
 else:
     print(platform + " detected")
     min_w = 690
@@ -838,7 +838,7 @@ select_label = tk.Label(window,text="Example/Own Data:",font=("Times",15,"bold")
 select_label.grid(row=2,column=0,sticky="E")
 
 sel_var = tk.StringVar(window) # Variable storing the selected value in the dropdown
-sel_options = non_hidden("./src/data")
+sel_options = non_hidden(os.path.join(os.path.dirname(os.path.abspath(__file__)),"data"))
 if "__pycache__" in sel_options: # Remove "__pycache__" from the options to display in the dropdown
     sel_options.remove("__pycache__")
 sel_options.sort()
