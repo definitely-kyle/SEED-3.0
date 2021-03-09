@@ -51,15 +51,15 @@ The GUI will start up and will look like this:
 
 * Windows:
 
-<img src="src/images/GUI_win.png" alt="GUI Windows" width="500"/>
+<img src="src/images/GUI_win.png" alt="GUI Windows" width="600"/>
 
 * Mac (old):
 
-<img src="src/images/GUI_mac.png" alt="GUI MacOS" width="500"/>
+<img src="src/images/GUI_mac.png" alt="GUI MacOS" width="600"/>
 
 From here, the data to be analysed can be selected from the “Example/Own Data” dropdown. Differentiation, optimisation, and feature library options can be edited by using the “Show Advanced” button, which shows the full GUI:
 
-<img src="src/images/GUI_win_adv.png" alt="Advanced GUI Windows" width="1000"/>
+<img src="src/images/GUI_win_adv.png" alt="Advanced GUI Windows" width="1200"/>
 
 Check the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository for details on the optimization, differentiation and feature library options.
 
@@ -67,7 +67,7 @@ Check the [PySINDy](https://github.com/dynamicslab/pysindy) GitHub repository fo
 In order to use your own data with SEED, you must save the data as a _.csv_ file with one column of time series data, and further columns containing the data for each recorded variable. The first row of your _.csv_ file must be the names of each variable.  
 An example of a three variable system is shown below:
 
-<img src="src/images/Own_Data.png" alt="Own Data Table" width="500"/>
+<img src="src/images/Own_Data.png" alt="Own Data Table" width="600"/>
 
 There are two ways to run the program with your own data files.
 
@@ -81,11 +81,11 @@ After pressing the _Compute_ button, SEED uses the selected _Differentiation_, _
 
 The first window shows the output sparse coefficents in a table and the output equations of the system, as well as the overall model score:
 
-<img src="src/images/lorenz_window_1.png" alt="Lorenz System Output Data" width="700"/>
+<img src="src/images/lorenz_window_1.png" alt="Lorenz System Output Data" width="600"/>
 
 The second window shows two sets of plots comparing the coefficients in a bar graph and modelling the predicted model versus the input data:
 
-<img src="src/images/lorenz_window_2.png" alt="Lorenz System Output Plots" width="700"/>
+<img src="src/images/lorenz_window_2.png" alt="Lorenz System Output Plots" width="600"/>
 
 These windows show the output of the Lorenz System example described below:
 
