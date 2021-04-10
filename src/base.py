@@ -3,17 +3,16 @@
 
 # Import packages
 try:
-    import numpy as np
     import csv
-    import matplotlib.pyplot as plt
-    import tkinter as tk
-    import sys
-    import tkinter as tk # tkinter is the GUI module used for this project
-    from tkinter import ttk
-    from tkinter import messagebox
-    from tkinter import filedialog as fd
-    from math import ceil
     import os
+    import sys
+    import tkinter as tk  # tkinter is the GUI module used for this project
+    from math import ceil
+    from tkinter import filedialog as fd
+    from tkinter import messagebox, ttk
+
+    import matplotlib.pyplot as plt
+    import numpy as np
 except ImportError as mod: # If the user didn't install the required modules beore trying to run SEED 2.0
     print("Install the required modules before starting:\n" + str(mod))
     messagebox.showerror(title="Module Import Error", message="Install the required modules before starting:\n" + str(mod))

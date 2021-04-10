@@ -4,34 +4,40 @@
 
 # Import all required modules
 try:
-    from base import * # A library for some base functions to reduce clutter
-    from derivative import dxdt # Derivative package developed alongside PySINDy
-    import pytest
-
-    import sys
-    from sys import platform # Used to detect the operating system used by the user to change the dimensions of the GUI
-    import tkinter as tk # tkinter is the GUI module used for this project
-    from tkinter import ttk
-    from tkinter import messagebox
-    from tkinter import filedialog as fd
-    import numpy as np
-    import os
-    import io
-    from PIL import Image, ImageTk # Used for the addition of the Durham University logo to the GUI
-    from urllib.request import urlopen # Used for the addition of the Durham University logo to the GUI
-    import ssl # Needed for the Durham University logo to open properly
-    import pysindy as ps
-    from sklearn.linear_model import Lasso
-    import ast # ast is used to find the class name to use when instantiating the optimization variable
-    from scipy.signal import savgol_filter # Although unused in the code, this is needed for the smoothed finite difference differentiation option to work
-    from scipy.integrate import odeint # used when generating the lorenz data for the "Generate Lorenz System" option
+    import ast  # ast is used to find the class name to use when instantiating the optimization variable
     import csv
-    import webbrowser # Used for opening the GitHub page when the "Tutorial" button is pressed so the user can read the readme file
+    import io
+    import os
+    import ssl  # Needed for the Durham University logo to open properly
+    import sys
+    import tkinter as tk  # tkinter is the GUI module used for this project
+    import webbrowser  # Used for opening the GitHub page when the "Tutorial" button is pressed so the user can read the readme file
     from math import ceil
+    from sys import \
+        platform  # Used to detect the operating system used by the user to change the dimensions of the GUI
+    from tkinter import filedialog as fd
+    from tkinter import messagebox, ttk
+    from urllib.request import \
+        urlopen  # Used for the addition of the Durham University logo to the GUI
+
     import matplotlib
     import matplotlib.pyplot as plt
-    from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
-    import pandas as pd # Used when saving the output coefficient matrix to a .csv file
+    import numpy as np
+    import pandas as pd  # Used when saving the output coefficient matrix to a .csv file
+    import pysindy as ps
+    from derivative import \
+        dxdt  # Derivative package developed alongside PySINDy
+    from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg,
+                                                   NavigationToolbar2Tk)
+    from PIL import (  # Used for the addition of the Durham University logo to the GUI
+        Image, ImageTk)
+    from scipy.integrate import \
+        odeint  # used when generating the lorenz data for the "Generate Lorenz System" option
+    from scipy.signal import \
+        savgol_filter  # Although unused in the code, this is needed for the smoothed finite difference differentiation option to work
+    from sklearn.linear_model import Lasso
+
+    from base import *  # A library for some base functions to reduce clutter
 except ImportError as mod: # If the user didn't install the required modules beore trying to run SEED 2.0
     print("Install the required modules before starting:\n" + str(mod))
     messagebox.showerror(title="Module Import Error", message="Install the required modules before starting:\n" + str(mod))
@@ -41,7 +47,6 @@ except Exception as err: # Any other exception that should occur (nothing else s
     sys.exit()
 
 # Any global variables used throughout SEED 2.0
-
 pysindypath = os.path.dirname(ps.__file__) # Find file path for pysindy module within the python files
 hidden = False # Is the own data file browser button shown
 to_open = " " # Variable storing the filepath for the own data file
