@@ -45,8 +45,8 @@ Many of the future developments and methods added to PySINDy are automatically c
 need for manual addition to the code. One may choose from a selection of differentiation methods, optimiser 
 methods and custom libraries and can change any options within these categories, with typical default values
 provided. `SEED` then creates the SINDy model and provides the output equations and model comparisons, which can then be 
-saved for use. SINDy with Control (SINDYc) [BRUNTON2016710] functionality is also provided to allow the user to identify dynamical systems
-with forcing inputs and control.
+saved for use. SINDy with Control (SINDYc) [@BRUNTON2016710] functionality is also provided to allow the user to 
+identify dynamical systems with forcing inputs and control.
 
 # Acknowledgements
 
