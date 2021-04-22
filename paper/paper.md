@@ -1,5 +1,5 @@
 ---
-title: 'SEED: Software for the Extraction of Equations from Data'
+title: 'SEED 3: Software for the Extraction of Equations from Data'
 tags:
   - Python
   - graphical user interface
@@ -19,7 +19,7 @@ affiliations:
     index: 1
   - name: Institute for Data Science, Durham University, South Road, Durham, DH1 3LE, UK
     index: 2
-date: 02 March 2021
+date: 22 April 2021
 bibliography: paper.bib
 ---
 
@@ -31,11 +31,11 @@ Scientific discovery in the present day has moved increasingly in the direction 
 
 # Statement of Need
 
-Research in system identification in the Modern Era is primarily led by data-driven methods, such as Sparse Identification of Non-linear Dynamics (SINDy), Dynamic Mode Decomposition (DMD), Koopman Operator. SINDy has been implemented as the python package PySINDy and, while effective, requires considerable knowledge in Python programming to utilise the tools to their full extent. `SEED` remedies this barrier by providing a Graphical User Interface (GUI) with access to all facets of PySINDy while remaining approachable and easy to use.
+Research in system identification in the Modern Era is primarily led by data-driven methods and sparsity algorithms. One such method of key interest is the Sparse Identification of Non-linear Dynamics (SINDy) [@Brunton3932]. SINDy has been implemented as the python package PySINDy and, while effective, requires considerable knowledge in Python programming to utilise the tools to their full extent. `SEED 3` remedies this barrier by providing a Graphical User Interface (GUI) with access to all facets of PySINDy while remaining approachable and easy to use.
 
-`SEED` maintains the modular approach core to the PySINDy object and generates the GUI from the source code of the PySINDy package. The allows for the future developments to PySINDy to be automatically captured without need for manual addition to the codebase. One may choose from a selection of numerical differentiation methods, optimiser methods and custom libraries and can change any options within these categories, with typical default values provided. Upon computation `SEED` then creates the SINDy model and provides the output equations and model parameters, which can then be saved for use. Coefficient tables and plots displaying the predicted model versus the input data are also presented in separate windows. `SINDy with Control` (SINDYc) [@BRUNTON2016710] functionality is also provided to allow the user to identify dynamical systems with forcing inputs and control. 
+`SEED 3` maintains the modular approach core to the PySINDy model and generates the GUI from the source code of the package. The allows for the future developments to PySINDy to be automatically captured without need for manual addition to the codebase. One may choose from a selection of numerical differentiation methods, optimiser methods and custom libraries and can change any options within these categories, with typical default values provided. Upon computation `SEED 3` then creates the SINDy model and provides the output equations and model parameters, which can then be saved for use. Coefficient tables and plots displaying the predicted model versus the input data are also presented in separate windows. `SINDy with Control` (SINDYc) [@BRUNTON2016710] functionality is also provided to allow the user to identify dynamical systems with forcing inputs and control. 
 
-These methods are explained using two key examples, the Lorenz System [@lorenz1963] and the Lotka-Volterra (Predator-Prey) System [@lotka1910]. These two examples have been extensively studied and are very useful as examples for this reason. The Lorenz System is used to demonstrate SEED in standard cases with no forcing function or other control. The Lotka-Volterra System is analysed as an unforced system without using SINDYc, and as a forced system with SINDYc analysis enabled.
+These methods are explained using two key examples, the Lorenz System [@lorenz1963] and the Lotka-Volterra (Predator-Prey) System [@lotka1910]. These two examples have been extensively studied and are very useful as examples for this reason. The Lorenz System is used to demonstrate use of `SEED 3` in standard cases with no forcing function or other control. The Lotka-Volterra System is analysed as an unforced system without using SINDYc, and as a forced system with SINDYc analysis enabled.
 
 # Acknowledgements
 
