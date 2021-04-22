@@ -9,13 +9,17 @@ tags:
 authors:
   - name: Kyle Kean
     affiliation: 1
+  - name: Michael Vause
+    affiliation: "1, 2"
   - name: Rui Carvalho
     orcid: 0000-0002-3279-4218
-    affiliation: 1
+    affiliation: "1, 2"
 affiliations:
-  - name: Department of Engineering, Durham University
+  - name: Department of Engineering, Durham University, South Road, Durham, DH1 3LE, UK
     index: 1
-date: 21 February 2021
+  - name: Institute for Data Science, Durham University, South Road, Durham, DH1 3LE, UK
+    index: 2
+date: 02 March 2021
 bibliography: paper.bib
 ---
 
@@ -30,16 +34,22 @@ researchers in a wide variety fields without any need for prior programming know
 
 # Statement of Need
 
-Research in system identification in the Modern Era is primarily led by data-driven methods, such as Dynamic Mode 
-Decomposition (DMD), Sparse Identification of Non-linear Dynamics (SINDy), Koopman Operator, etc., and their 
-implementations. SINDy has been implemented as the python package PySINDy and, while effective, requires considerable 
+Research in system identification in the Modern Era is primarily led by data-driven methods, such as Sparse Identification 
+of Non-linear Dynamics (SINDy), Dynamic Mode Decomposition (DMD), Koopman Operator, etc., and their implementations. 
+SINDy has been implemented as the python package PySINDy and, while effective, requires considerable 
 knowledge in Python programming to utilise the tools to their full extent. `SEED` remedies this barrier by providing
 a Graphical User Interface (GUI) with access to all facets of PySINDy while remaining approachable and easy to use.
 
-`SEED` provides a modular approach for interfacing with PySINDy. One may choose from a selection of differentiation 
-methods, optimiser methods and custom libraries and can change any options within these categories, with typical default values
+`SEED` provides a modular approach for interfacing with PySINDy, and includes all methods in the package. 
+Many of the future developments and methods added to PySINDy are automatically captured and displayed, without 
+need for manual addition to the code. One may choose from a selection of differentiation methods, optimiser 
+methods and custom libraries and can change any options within these categories, with typical default values
 provided. `SEED` then creates the SINDy model and provides the output equations and model comparisons, which can then be 
-saved for use. SINDy with Control (SINDYc) functionality is also provided to allow the user to identify dynamical systems
-with forcing inputs and control.
+saved for use. SINDy with Control (SINDYc) [@BRUNTON2016710] functionality is also provided to allow the user to 
+identify dynamical systems with forcing inputs and control.
+
+# Acknowledgements
+
+The Institute for Data Science, Durham University, generously supported this research.
 
 # References
