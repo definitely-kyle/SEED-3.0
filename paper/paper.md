@@ -19,23 +19,23 @@ affiliations:
     index: 1
   - name: Institute for Data Science, Durham University, South Road, Durham, DH1 3LE, UK
     index: 2
-date: 22 April 2021
+date: 23 April 2021
 bibliography: paper.bib
 ---
 
 # Summary
 
-Scientific discovery in the present day has moved increasingly in the direction of machine learning and data-driven methods. This is due to in part to an abundance of measurement options for collecting data from a system, as well as the unrelenting growth of computational power. However, while a huge amount of data which is relevant to a system's behaviour can be collected, the key governing equations are sparse in the space of basis functions. 
+Scientific discovery in the present day has moved increasingly in the direction of machine learning and data-driven methods due to an abundance of options for collecting data, as well as the unrelenting growth of computation. However, while a vast amount of data relevant to a system's behaviour can be collected, its governing equations are sparse in the space of basis functions.
 
-`SEED` is an intuitive and comprehensive Graphical User Interface (GUI) for the Python package PySINDy [@deSilva2020] which allows for the extraction of governing differential equations from data. The GUI provides the cutting-edge data-driven methods to researchers in a wide variety fields without any need for prior programming knowledge. 
+`SEED` is an intuitive and comprehensive Graphical User Interface (GUI) for the Python package PySINDy [@deSilva2020], which allows for the extraction of governing differential equations from data. The GUI provides researchers in various fields with access to PySINDy's functionality without any need for prior programming knowledge.
 
 # Statement of Need
 
-Research in system identification in the Modern Era is primarily led by data-driven methods and sparsity algorithms. One such method of key interest is the Sparse Identification of Non-linear Dynamics (SINDy) [@Brunton3932]. SINDy has been implemented as the python package PySINDy and, while effective, requires considerable knowledge in Python programming to utilise the tools to their full extent. `SEED 3` remedies this barrier by providing a Graphical User Interface (GUI) with access to all facets of PySINDy while remaining approachable and easy to use.
+Data-driven methods and sparsity algorithms lead current research in system identification. One such method is the Sparse Identification of Non-linear Dynamics (SINDy) [@Brunton3932]. SINDy is implemented as the python package PySINDy and, while effective, requires considerable knowledge in Python programming to utilise the tools to their full extent. `SEED` remedies this barrier by providing a Graphical User Interface (GUI) with access to all facets of PySINDy while remaining approachable and easy to use.
 
-`SEED 3` maintains the modular approach core to the PySINDy model and generates the GUI from the source code of the package. The allows for the future developments to PySINDy to be automatically captured without need for manual addition to the codebase. One may choose from a selection of numerical differentiation methods, optimiser methods and custom libraries and can change any options within these categories, with typical default values provided. Upon computation `SEED 3` then creates the SINDy model and provides the output equations and model parameters, which can then be saved for use. Coefficient tables and plots displaying the predicted model versus the input data are also presented in separate windows. `SINDy with Control` (SINDYc) [@BRUNTON2016710] functionality is also provided to allow the user to identify dynamical systems with forcing inputs and control. 
+`SEED` maintains the modular approach core to the PySINDy model and generates the GUI from the package's source code, allowing for future developments to PySINDy to be automatically captured without the need for manual addition to the codebase. Users can select the numerical differentiation methods, optimiser methods and custom libraries and change any options within these categories, with typical default values provided. Upon computation, SEED then creates the SINDy model, and the user can display and save the output equations and model parameters.  The software also shows coefficient tables and plots displaying the predicted model versus the input data in separate windows.  Moreover, SEED provides the functionality of SINDy with Control (SINDYc) [@BRUNTON2016710] to allow the user to identify dynamical systems with forcing inputs and control.
 
-These methods are explained using two key examples, the Lorenz System [@lorenz1963] and the Lotka-Volterra (Predator-Prey) System [@lotka1910]. These two examples have been extensively studied and are very useful as examples for this reason. The Lorenz System is used to demonstrate use of `SEED 3` in standard cases with no forcing function or other control. The Lotka-Volterra System is analysed as an unforced system without using SINDYc, and as a forced system with SINDYc analysis enabled.
+We illustrate SEED's functionality with two extensively studied examples, the Lorenz System [@lorenz1963] and the Lotka-Volterra (Predator-Prey) System [@lotka1910]. We use the Lorenz system to demonstrate `SEED` with no forcing function or other control. In contrast, the Lotka-Volterra System is an unforced system without using SINDYc, and a forced system with SINDYc analysis enabled.
 
 # Acknowledgements
 
