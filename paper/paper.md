@@ -1,5 +1,5 @@
 ---
-title: 'SEED 3: Software for the Extraction of Equations from Data'
+title: 'SEED: Software for the Extraction of Equations from Data'
 tags:
   - Python
   - graphical user interface
